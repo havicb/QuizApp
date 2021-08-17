@@ -1,0 +1,85 @@
+{
+  "quizzes": [
+    {
+      "category": "General knowledge",
+      "difficulties": "Easy, Medium, Hard",
+      "photo": "android.resource://com.example.quizapp/drawable/general_knowledge"
+    },
+    {
+      "category": "Entertainment: Books",
+      "difficulties": "Easy, Medium, Hard",
+      "photo": "android.resource://com.example.quizapp/drawable/books"
+    },
+    {
+      "category": "Entertainment: Film",
+      "difficulties": "Easy, Medium, Hard",
+      "photo": "android.resource://com.example.quizapp/drawable/film"
+    },
+    {
+      "category": "Entertainment: Music",
+      "difficulties": "Easy, Medium, Hard",
+      "photo": "android.resource://com.example.quizapp/drawable/music"
+    },
+    {
+      "category": "Entertainment: Television",
+      "difficulties": "Easy, Medium, Hard",
+      "photo": "android.resource://com.example.quizapp/drawable/television"
+    },
+    {
+      "category": "Entertainment: Video Games",
+      "difficulties": "Easy, Medium, Hard",
+      "photo": "android.resource://com.example.quizapp/drawable/video_games"
+    },
+    {
+      "category": "Science & Nature",
+      "difficulties": "Easy, Medium, Hard",
+      "photo": "android.resource://com.example.quizapp/drawable/science_nature"
+    },
+    {
+      "category": "Science: Computers",
+      "difficulties": "Easy, Medium, Hard",
+      "photo": "android.resource://com.example.quizapp/drawable/technology"
+    },
+    {
+      "category": "Science: Mathematics",
+      "difficulties": "Easy, Medium, Hard",
+      "photo": "android.resource://com.example.quizapp/drawable/math"
+    },
+    {
+      "category": "Sports",
+      "difficulties": "Easy, Medium, Hard",
+      "photo": "android.resource://com.example.quizapp/drawable/sports"
+    },
+    {
+      "category": "Geography",
+      "difficulties": "Easy, Medium, Hard",
+      "photo": "android.resource://com.example.quizapp/drawable/geography"
+    },
+    {
+      "category": "History",
+      "difficulties": "Easy, Medium, Hard",
+      "photo": "android.resource://com.example.quizapp/drawable/history"
+    },
+    {
+      "category": "Politics",
+      "difficulties": "Easy, Medium, Hard",
+      "photo": "android.resource://com.example.quizapp/drawable/politics"
+    },
+    {
+      "category": "Art",
+      "difficulties": "Easy, Medium, Hard",
+      "photo": "android.resource://com.example.quizapp/drawable/art"
+    },
+    {
+      "category": "Celebrities",
+      "difficulties": "Easy, Medium, Hard",
+      "photo": "android.resource://com.example.quizapp/drawable/celebrities"
+    },
+    {
+      "category": "Animals",
+      "difficulties": "Easy, Medium, Hard",
+      "photo": "android.resource://com.example.quizapp/drawable/animals"
+    }
+  ]
+}
+
