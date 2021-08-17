@@ -1,5 +1,5 @@
 # QuizApp
-Simple quiz app that demonstrates my skill as an android developer.
+Simple quiz app that demonstrates my skills as an android developer.
 
 # Dependencies
  - Latest Android Studio
