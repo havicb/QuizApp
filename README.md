@@ -12,7 +12,7 @@ Simple quiz app that demonstrates my skills as an android developer.
  - Networking with Retrofit
  - Multithreading with Coroutines
  - MVVM
- - Viewbinding with ViewModel
+ - Databinding with ViewModel
  - DI with Hilt
  - Fast image loading with Glide
  - Clean arhitecture
