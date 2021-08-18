@@ -22,7 +22,9 @@ abstract class BaseFragment<ViewBindingType : ViewDataBinding> : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         preInflate()
-        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        if (layoutId != 0) {
+            binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        }
         return binding.root
     }
 
@@ -33,7 +35,6 @@ abstract class BaseFragment<ViewBindingType : ViewDataBinding> : Fragment() {
 
     // this method will be called before inflating the view
     abstract fun preInflate()
-
     // this method will be called after inflating the view
     abstract fun postInflate(viewBindingType: ViewDataBinding?)
 }

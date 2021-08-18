@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.example.quizapp.presentation.main.home.HomeViewModel" />
     </data>
 
     <RelativeLayout
@@ -11,32 +13,32 @@
         android:layout_height="match_parent"
         tools:context=".presentation.main.home.HomeFragment">
 
-
         <EditText
             android:id="@+id/search_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:padding="12dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="@dimen/normal_150"
+            android:layout_marginTop="@dimen/normal_100"
+            android:layout_marginEnd="@dimen/normal_150"
+            android:layout_marginBottom="@dimen/normal_100"
+            android:background="@drawable/edit_text_shadow"
+            android:backgroundTint="@color/darkPurple"
             android:hint="@string/discover"
+            android:letterSpacing="0.02"
+            android:padding="@dimen/small_150"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textStyle="bold"
-            android:letterSpacing="0.02"
-            android:background="@drawable/search_view_background" />
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/quiz_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:clipToPadding="false"
             android:layout_below="@id/search_view"
-            tools:itemCount="10"
+            android:layout_marginStart="@dimen/normal_100"
+            android:layout_marginEnd="@dimen/normal_100"
+            android:clipToPadding="false"
+            tools:itemCount="4"
             tools:listitem="@layout/item_quiz" />
 
     </RelativeLayout>

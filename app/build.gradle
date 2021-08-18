@@ -67,6 +67,7 @@ dependencies {
 
     // Picasso
     implementation "com.squareup.picasso:picasso:$picassoVersion"
+    implementation "de.hdodenhof:circleimageview:$circleImageViewVersion"
 
     // Testing
     testImplementation "junit:junit:$jUnitVersion"

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Generic dimens -->
+    <dimen name="small_50">4dp</dimen>
+    <dimen name="small_100">8dp</dimen>
+    <dimen name="small_125">10dp</dimen>
+    <dimen name="small_150">12dp</dimen>
+    <dimen name="small_175">14dp</dimen>
+
+    <dimen name="normal_100">16dp</dimen>
+    <dimen name="normal_125">20dp</dimen>
+    <dimen name="normal_150">24dp</dimen>
+    <dimen name="normal_175">28dp</dimen>
+
+    <dimen name="large_100">32dp</dimen>
+    <dimen name="large_125">40dp</dimen>
+    <dimen name="large_150">48dp</dimen>
+    <dimen name="large_175">56dp</dimen>
+
+    <dimen name="extra_large_100">72dp</dimen>
+    <dimen name="extra_large_125">88dp</dimen>
+    <dimen name="extra_large_150">104dp</dimen>
+    <dimen name="extra_large_175">120dp</dimen>
+
+    <!-- Text sizes dimens -->
+    <dimen name="text_size_small">8sp</dimen>
+    <dimen name="text_size_small_125">10sp</dimen>
+
+    <dimen name="text_size_normal_75">12sp</dimen>
+    <dimen name="text_size_normal">16sp</dimen>
+    <dimen name="text_size_normal_125">20sp</dimen>
+
+    <dimen name="text_size_large">32sp</dimen>
+    <dimen name="text_size_large_125">40sp</dimen>
+</resources>

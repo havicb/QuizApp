@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.quizapp.presentation.main.quiz.QuizViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".QuizFragment">
+
+        <ProgressBar
+            android:id="@+id/question_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/extra_large_175" />
+
+        <TextView
+            android:id="@+id/question_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/question_progress"
+            tools:text="Question 1"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_marginTop="@dimen/large_175" />
+
+
+        <LinearLayout
+            android:id="@+id/first_two_answers_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/large_175"
+            android:layout_below="@id/question_number">
+
+            <TextView
+                android:id="@+id/answer_A"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/small_175"
+                android:layout_marginEnd="@dimen/small_175" />
+
+            <TextView
+                android:id="@+id/answer_B"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/small_175" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/last_two_answers_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/large_175"
+            android:layout_below="@id/first_two_answers_ll">
+
+            <TextView
+                android:id="@+id/answer_C"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/small_100"
+                android:layout_marginEnd="@dimen/small_100" />
+
+            <TextView
+                android:id="@+id/answer_D"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/small_100" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_proceed_to_next_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/next_question"
+            android:layout_below="@id/last_two_answers_ll"
+            android:layout_marginStart="@dimen/large_175"
+            android:layout_marginEnd="@dimen/large_175"
+            android:layout_marginTop="@dimen/large_175" />
+
+    </RelativeLayout>
+</layout>

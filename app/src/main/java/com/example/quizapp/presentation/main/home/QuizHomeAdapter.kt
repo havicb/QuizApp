@@ -8,7 +8,7 @@ import com.squareup.picasso.Picasso
 import kotlin.properties.Delegates
 
 class QuizHomeAdapter(
-    private val onQuizSelected: () -> Unit
+    private val quizSelected: (title: String) -> Unit,
 ) : RecyclerView.Adapter<QuizHomeAdapter.QuizVH>() {
 
     internal var quizList: List<QuizView> by Delegates.observable(emptyList()) { _, _, _ -> notifyDataSetChanged() }
@@ -34,9 +34,7 @@ class QuizHomeAdapter(
                 .fit()
                 .into(quizPhoto)
 
-            root.setOnClickListener {
-                onQuizSelected()
-            }
+            root.setOnClickListener { quizSelected(quizView.title) }
         }
     }
 }

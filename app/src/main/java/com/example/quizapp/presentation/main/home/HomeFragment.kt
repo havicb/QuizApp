@@ -1,36 +1,54 @@
 package com.example.quizapp.presentation.main.home
 
-import android.os.Bundle
-import android.view.View
-import android.widget.Toast
-import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.quizapp.BR
 import com.example.quizapp.R
+import com.example.quizapp.core.extensions.showToast
 import com.example.quizapp.databinding.FragmentHomeBinding
-import com.example.quizapp.presentation.common.base.view.BaseFragment
+import com.example.quizapp.presentation.common.base.view.BaseBoundFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>() {
+class HomeFragment : BaseBoundFragment<FragmentHomeBinding, HomeViewModel>() {
 
     override val layoutId = R.layout.fragment_home
-    private val quizAdapter: QuizHomeAdapter by lazy { QuizHomeAdapter() {} }
+    override val viewModelNameId: Int = BR.viewModel
+    override val viewModel: HomeViewModel by viewModels()
+
+    private val quizAdapter: QuizHomeAdapter by lazy {
+        QuizHomeAdapter(viewModel::quizSelected)
+    }
+
+    override fun initUI() {
+        initRecycler()
+    }
+
+    override fun bindToViewModel() {
+        viewModel.quiz.observe(viewLifecycleOwner) {
+            quizAdapter.quizList = it
+        }
+        viewModel.homeFragmentState.observe(viewLifecycleOwner) {
+            handleFragmentState(it)
+        }
+    }
+
+    private fun handleFragmentState(fragmentState: HomeFragmentState) {
+        when (fragmentState) {
+            is HomeFragmentState.QuizSelected -> SetQuizDialog(
+                requireContext(),
+                fragmentState.title
+            ) { viewModel.startQuiz(it) }
+            is HomeFragmentState.StartQuiz -> {
+                requireContext().showToast("Starting quiz -> ${fragmentState.quizSettings}")
+            }
+        }
+    }
 
     private fun initRecycler() = with(binding) {
         quizRecyclerview.apply {
             adapter = quizAdapter
             layoutManager = GridLayoutManager(requireContext(), 2)
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initRecycler()
-    }
-
-    override fun preInflate() {
-    }
-
-    override fun postInflate(viewBindingType: ViewDataBinding?) {
     }
 }

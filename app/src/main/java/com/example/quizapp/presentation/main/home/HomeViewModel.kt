@@ -1,5 +1,6 @@
 package com.example.quizapp.presentation.main.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.quizapp.domain.quiz.entity.QuizData
@@ -17,11 +18,43 @@ class HomeViewModel @Inject constructor(
     private var quizData: QuizData = quizDataUseCase.fetchQuizData()
 
     private val _quiz = MutableLiveData<List<QuizView>>()
+    private val _homeFragmentState = MutableLiveData<HomeFragmentState>()
+
+    private var quizSelected: String? = null
+
     val quiz: LiveData<List<QuizView>> get() = _quiz
+    val homeFragmentState: LiveData<HomeFragmentState> get() = _homeFragmentState
 
     init {
         _quiz.value = quizData.quizzes.map {
             it.toView()
         }
     }
+
+    fun quizSelected(quizTitle: String) {
+        quizSelected = quizTitle
+        _homeFragmentState.value = HomeFragmentState.QuizSelected(quizTitle)
+    }
+
+    fun startQuiz(difficulty: QuizDifficulty) {
+        Log.d("CALLING", "CALLED")
+        _homeFragmentState.value = HomeFragmentState.StartQuiz(
+            QuizSettings(
+                quizSelected!!,
+                difficulty.value,
+                10
+            )
+        )
+    }
 }
+
+sealed class HomeFragmentState {
+    data class QuizSelected(val title: String) : HomeFragmentState()
+    data class StartQuiz(val quizSettings: QuizSettings) : HomeFragmentState()
+}
+
+data class QuizSettings(
+    val title: String,
+    val quizDifficulty: String,
+    val numberOfQuestions: Int
+)

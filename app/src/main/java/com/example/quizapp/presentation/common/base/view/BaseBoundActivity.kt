@@ -3,7 +3,7 @@ package com.example.quizapp.presentation.common.base.view
 import androidx.databinding.ViewDataBinding
 
 abstract class BaseBoundActivity<ViewModelType : BaseViewModel, ViewDataBindingType : ViewDataBinding> :
-    BaseActivity<ViewDataBindingType>() {
+    BaseActivity<ViewDataBindingType>(), BoundView<ViewModelType> {
 
     override fun preInflate() {
     }
@@ -11,7 +11,13 @@ abstract class BaseBoundActivity<ViewModelType : BaseViewModel, ViewDataBindingT
     override fun postInflate(viewDataBinding: ViewDataBinding?) {
         viewDataBinding?.let {
             it.lifecycleOwner = this
+            it.setVariable(viewModelNameId, viewModel)
             it.executePendingBindings()
         }
+        initUI()
+        bindToViewModel()
     }
+
+    // method for UI manipulation
+    open fun initUI() {}
 }
