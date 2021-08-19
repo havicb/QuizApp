@@ -18,6 +18,7 @@ buildscript {
 
         // Coroutines
         ktxCoroutinesVersion = "1.5.1"
+        ktxCoroutinesAdapterVersion = '0.9.2'
 
         // Navigation
         navigationVersion = "2.3.5"

@@ -6,8 +6,8 @@ import androidx.navigation.findNavController
 import com.example.quizapp.BR
 import com.example.quizapp.R
 import com.example.quizapp.databinding.ActivityMainBinding
-import com.example.quizapp.presentation.common.base.view.BaseBoundActivity
-import com.example.quizapp.presentation.common.base.view.BaseViewModel
+import com.example.quizapp.presentation.base.view.BaseBoundActivity
+import com.example.quizapp.presentation.base.view.BaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

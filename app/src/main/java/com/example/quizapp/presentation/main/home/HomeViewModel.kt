@@ -1,13 +1,13 @@
 package com.example.quizapp.presentation.main.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.quizapp.domain.quiz.entity.QuizData
 import com.example.quizapp.domain.quiz.entity.toView
 import com.example.quizapp.domain.quiz.usecase.GetQuizDataUseCase
-import com.example.quizapp.presentation.common.base.view.BaseViewModel
+import com.example.quizapp.presentation.base.view.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.io.Serializable
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,7 +37,6 @@ class HomeViewModel @Inject constructor(
     }
 
     fun startQuiz(difficulty: QuizDifficulty) {
-        Log.d("CALLING", "CALLED")
         _homeFragmentState.value = HomeFragmentState.StartQuiz(
             QuizSettings(
                 quizSelected!!,
@@ -57,4 +56,4 @@ data class QuizSettings(
     val title: String,
     val quizDifficulty: String,
     val numberOfQuestions: Int
-)
+) : Serializable

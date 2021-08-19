@@ -16,8 +16,12 @@
     </fragment>
     <fragment
         android:id="@+id/quizFragment"
-        android:name="com.example.quizapp.QuizFragment"
+        android:name="com.example.quizapp.presentation.main.quiz.QuizFragment"
         android:label="fragment_quiz"
-        tools:layout="@layout/fragment_quiz" />
+        tools:layout="@layout/fragment_quiz" >
+        <argument
+            android:name="quizSettings"
+            app:argType="com.example.quizapp.presentation.main.home.QuizSettings" />
+    </fragment>
 
 </navigation>

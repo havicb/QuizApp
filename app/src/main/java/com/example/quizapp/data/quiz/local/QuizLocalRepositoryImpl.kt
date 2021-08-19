@@ -1,17 +1,17 @@
-package com.example.quizapp.data.quiz.repository
+package com.example.quizapp.data.quiz.local
 
 import android.content.Context
 import com.google.gson.Gson
 
-class QuizRepositoryImpl(
+class QuizLocalRepositoryImpl(
     private val context: Context
-) : QuizRepository {
+) : QuizLocalRepository {
 
     // get assets only works when you have reference to specific context
-    override fun fetchQuizzes(): QuizResponse {
+    override fun fetchQuizzes(): QuizLocalResponse {
         return Gson().fromJson(
             context.assets.open("quizes.json").bufferedReader(),
-            QuizResponse::class.java
+            QuizLocalResponse::class.java
         )
     }
 }

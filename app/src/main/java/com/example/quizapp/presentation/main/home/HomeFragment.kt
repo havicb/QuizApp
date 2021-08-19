@@ -1,12 +1,13 @@
 package com.example.quizapp.presentation.main.home
 
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.quizapp.BR
 import com.example.quizapp.R
-import com.example.quizapp.core.extensions.showToast
 import com.example.quizapp.databinding.FragmentHomeBinding
-import com.example.quizapp.presentation.common.base.view.BaseBoundFragment
+import com.example.quizapp.presentation.base.view.BaseBoundFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,7 +41,10 @@ class HomeFragment : BaseBoundFragment<FragmentHomeBinding, HomeViewModel>() {
                 fragmentState.title
             ) { viewModel.startQuiz(it) }
             is HomeFragmentState.StartQuiz -> {
-                requireContext().showToast("Starting quiz -> ${fragmentState.quizSettings}")
+                findNavController().navigate(
+                    R.id.action_homeFragment_to_quizFragment,
+                    bundleOf("ARG" to fragmentState.quizSettings)
+                )
             }
         }
     }

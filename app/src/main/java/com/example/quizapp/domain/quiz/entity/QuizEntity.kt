@@ -1,7 +1,7 @@
 package com.example.quizapp.domain.quiz.entity
 
-import com.example.quizapp.data.quiz.repository.QuizDTO
-import com.example.quizapp.data.quiz.repository.QuizResponse
+import com.example.quizapp.data.quiz.local.QuizLocalDTO
+import com.example.quizapp.data.quiz.local.QuizLocalResponse
 import com.example.quizapp.presentation.main.home.QuizView
 
 data class QuizEntity(
@@ -14,14 +14,14 @@ data class QuizData(
     val quizzes: List<QuizEntity>
 )
 
-fun QuizDTO.toDomain() = QuizEntity(
+fun QuizLocalDTO.toDomain() = QuizEntity(
     category,
     difficulties.split(','),
     photoPath
 )
 
-fun QuizResponse.toDomain() = QuizData(
-    quizList.map {
+fun QuizLocalResponse.toDomain() = QuizData(
+    quizLocalList.map {
         it.toDomain()
     }
 )

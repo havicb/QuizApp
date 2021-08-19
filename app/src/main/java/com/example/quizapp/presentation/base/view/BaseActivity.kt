@@ -1,4 +1,4 @@
-package com.example.quizapp.presentation.common.base.view
+package com.example.quizapp.presentation.base.view
 
 import android.os.Bundle
 import androidx.annotation.LayoutRes
