@@ -1,6 +1,7 @@
 package com.example.quizapp.core.extensions
 
 import android.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.quizapp.R
 
@@ -15,4 +16,8 @@ fun Fragment.showGenericDialog(title: String, message: String, onButtonClick: ((
                 onButtonClick.invoke()
         }
     }.show()
+}
+
+fun Fragment.getColor(color: Int): Int {
+    return ContextCompat.getColor(requireContext(), color)
 }

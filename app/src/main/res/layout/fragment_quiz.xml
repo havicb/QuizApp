@@ -5,6 +5,10 @@
     <data>
 
         <variable
+            name="selectedAnswer"
+            type="String" />
+
+        <variable
             name="viewModel"
             type="com.example.quizapp.presentation.main.quiz.QuizViewModel" />
     </data>
@@ -15,21 +19,22 @@
         tools:context=".QuizFragment">
 
         <ProgressBar
-            android:id="@+id/question_progress"
+            android:id="@+id/quiz_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/extra_large_175" />
+            android:layout_marginTop="@dimen/extra_large_125"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/question_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/question_progress"
+            android:layout_below="@id/quiz_progress"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/large_175"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_large"
+            android:visibility="invisible"
             tools:text="Question 1" />
 
         <TextView
@@ -42,11 +47,22 @@
             android:layout_marginTop="@dimen/large_175"
             android:layout_marginEnd="@dimen/normal_150"
             android:background="@drawable/answer_background"
+            android:gravity="center"
             android:padding="@dimen/small_150"
             android:text="@={viewModel.question}"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_normal"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="invisible" />
+
+
+        <ProgressBar
+            android:id="@+id/question_loading_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="visible" />
 
 
         <LinearLayout
@@ -55,7 +71,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/question"
             android:layout_marginTop="@dimen/large_175"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="invisible">
 
             <TextView
                 android:id="@+id/answer_A"
@@ -65,6 +82,8 @@
                 android:layout_marginEnd="@dimen/small_175"
                 android:layout_weight="1"
                 android:background="@drawable/answer_background"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.selectedAnswer(answerA)}"
                 android:padding="@dimen/small_125"
                 android:text="@={viewModel.answerA}" />
 
@@ -75,6 +94,8 @@
                 android:layout_marginEnd="@dimen/small_175"
                 android:layout_weight="1"
                 android:background="@drawable/answer_background"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.selectedAnswer(answerB)}"
                 android:padding="@dimen/small_125"
                 android:text="@={viewModel.answerB}" />
 
@@ -86,7 +107,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/first_two_answers_ll"
             android:layout_marginTop="@dimen/large_175"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="invisible">
 
             <TextView
                 android:id="@+id/answer_C"
@@ -96,6 +118,8 @@
                 android:layout_marginEnd="@dimen/small_175"
                 android:layout_weight="1"
                 android:background="@drawable/answer_background"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.selectedAnswer(answerC)}"
                 android:padding="@dimen/small_125"
                 android:text="@={viewModel.answerC}" />
 
@@ -106,6 +130,8 @@
                 android:layout_marginEnd="@dimen/small_175"
                 android:layout_weight="1"
                 android:background="@drawable/answer_background"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.selectedAnswer(answerD)}"
                 android:padding="@dimen/small_125"
                 android:text="@={viewModel.answerD}" />
         </LinearLayout>
@@ -118,11 +144,12 @@
             android:layout_marginStart="@dimen/large_175"
             android:layout_marginTop="@dimen/large_175"
             android:layout_marginEnd="@dimen/large_175"
-            android:background="@drawable/answer_background"
-            android:onClick="@{() -> viewModel.nextQuestion()}"
+            android:backgroundTint="@color/white"
+            android:onClick="@{() -> viewModel.checkQuestion(selectedAnswer)}"
             android:text="@string/next_question"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_normal" />
+            android:textSize="@dimen/text_size_normal"
+            android:visibility="invisible" />
 
     </RelativeLayout>
 </layout>

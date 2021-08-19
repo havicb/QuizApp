@@ -1,14 +1,18 @@
 package com.example.quizapp.presentation.main.quiz
 
+import android.view.View
+import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.quizapp.R
 import com.example.quizapp.domain.questions.entity.QuestionEntity
 import com.example.quizapp.domain.questions.usecase.GetQuestionsUseCase
 import com.example.quizapp.presentation.base.view.BaseViewModel
-import com.example.quizapp.presentation.main.quiz.question.QuestionView
+import com.example.quizapp.presentation.main.quiz.question.Selectable
 import com.example.quizapp.presentation.main.quiz.question.toView
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -19,40 +23,64 @@ class QuizViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val questionsData = Stack<QuestionEntity>()
+    private var currentQuestion: QuestionEntity? = null
 
     private val _quizFragmentState = MutableLiveData<QuizFragmentState>()
-     val question = MutableLiveData<String>()
-     val answerA = MutableLiveData<String>()
-     val answerB = MutableLiveData<String>()
-     val answerC = MutableLiveData<String>()
-     val answerD = MutableLiveData<String>()
+
+    val question = MutableLiveData<String>()
+    val answerA = MutableLiveData<String>()
+    val answerB = MutableLiveData<String>()
+    val answerC = MutableLiveData<String>()
+    val answerD = MutableLiveData<String>()
 
     val quizFragmentState: LiveData<QuizFragmentState> get() = _quizFragmentState
-
 
     init {
         fetch()
     }
 
-    fun fetch() = viewModelScope.launch {
-        val data = questionsUseCase.fetchQuestionData(10, 10, "easy")
-        for (i in (data.questions.size - 1) downTo 0) {
-            questionsData.add(data.questions[i])
+    fun checkQuestion(userAnswer: String) = viewModelScope.launch {
+        if (userAnswer == currentQuestion?.correctAnswer) {
+            changeState(QuizFragmentState.CorrectAnswer())
+            delay(3000)
+            nextQuestion()
+        } else {
+            changeState(QuizFragmentState.InCorrectAnswer())
         }
-        handleNewQuestion(questionsData.pop().toView())
     }
 
-    fun nextQuestion() {
-        handleNewQuestion(questionsData.pop().toView())
-        if (questionsData.empty()) {
-            _quizFragmentState.value = QuizFragmentState.LastQuestion
-        }
+    fun selectedAnswer(view: View) {
+        changeState(QuizFragmentState.AnswerUnSelected)
+        changeState(QuizFragmentState.AnswerSelected(SelectedAnswerModelUI(view as TextView)))
     }
 
     fun onLastQuestion() {
     }
 
-    private fun handleNewQuestion(questionView: QuestionView) {
+    private fun nextQuestion() {
+        changeState(QuizFragmentState.AnswerUnSelected)
+        handleNewQuestion(questionsData.pop())
+        if (questionsData.empty()) {
+            changeState(QuizFragmentState.LastQuestion)
+        }
+    }
+
+    private fun changeState(state: QuizFragmentState) {
+        _quizFragmentState.value = state
+    }
+
+    private fun fetch() = viewModelScope.launch {
+        val data = questionsUseCase.fetchQuestionData(10, 10, "easy")
+        for (i in (data.questions.size - 1) downTo 0) {
+            questionsData.add(data.questions[i])
+        }
+        changeState(QuizFragmentState.QuestionsLoaded)
+        handleNewQuestion(questionsData.pop())
+    }
+
+    private fun handleNewQuestion(nextQuestion: QuestionEntity) {
+        currentQuestion = nextQuestion
+        val questionView = nextQuestion.toView()
         question.value = questionView.title
         answerA.value = questionView.answerA
         answerB.value = questionView.answerB
@@ -62,6 +90,15 @@ class QuizViewModel @Inject constructor(
 }
 
 sealed class QuizFragmentState {
-    object QuestionSelected : QuizFragmentState()
+    object QuestionsLoaded : QuizFragmentState()
+    object AnswerUnSelected : QuizFragmentState()
+    data class AnswerSelected(val selectable: Selectable) : QuizFragmentState()
+    data class CorrectAnswer(val color: Int = R.color.lightGreen) : QuizFragmentState()
+    data class InCorrectAnswer(val color: Int = R.color.red) : QuizFragmentState()
     object LastQuestion : QuizFragmentState()
+}
+
+data class SelectedAnswerModelUI(val answer: TextView) : Selectable {
+    override val textView = answer
+    override val backgroundColor = R.color.yellow
 }
