@@ -17,6 +17,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField 'String', 'API_BASE_URL', '"https://opentdb.com/"'
+        buildConfigField 'String', 'AUTH_API_BASE_URL', '"https://reqres.in/"'
     }
 
     dataBinding {

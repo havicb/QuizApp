@@ -1,11 +1,11 @@
 package com.example.quizapp.di
 
 import android.content.Context
-import com.example.quizapp.data.quiz.local.QuizLocalRepository
-import com.example.quizapp.data.quiz.local.QuizLocalRepositoryImpl
 import com.example.quizapp.data.questions.remote.api.QuestionsAPI
 import com.example.quizapp.data.questions.remote.repository.QuestionRepository
 import com.example.quizapp.data.questions.remote.repository.QuestionRepositoryImpl
+import com.example.quizapp.data.quiz.local.QuizLocalRepository
+import com.example.quizapp.data.quiz.local.QuizLocalRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,7 +24,8 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideQuestionRepository(questionsApi: QuestionsAPI): QuestionRepository = QuestionRepositoryImpl(questionsApi)
+    fun provideQuestionRepository(questionsApi: QuestionsAPI): QuestionRepository =
+        QuestionRepositoryImpl(questionsApi)
 
     @Provides
     @Singleton

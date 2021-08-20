@@ -22,7 +22,6 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimaryVariant"
             android:elevation="@dimen/small_50"
-            android:layout_marginBottom="@dimen/small_100"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
