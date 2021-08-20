@@ -2,12 +2,10 @@ package com.example.quizapp.presentation.main.quiz
 
 import android.widget.TextView
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.quizapp.BR
 import com.example.quizapp.R
-import com.example.quizapp.core.extensions.getColor
-import com.example.quizapp.core.extensions.hide
-import com.example.quizapp.core.extensions.showToast
-import com.example.quizapp.core.extensions.visible
+import com.example.quizapp.core.extensions.*
 import com.example.quizapp.databinding.FragmentQuizBinding
 import com.example.quizapp.presentation.base.view.BaseBoundFragment
 import com.example.quizapp.presentation.main.quiz.question.Selectable
@@ -28,15 +26,30 @@ class QuizFragment : BaseBoundFragment<FragmentQuizBinding, QuizViewModel>() {
 
     private fun handleFragmentState(quizFragmentState: QuizFragmentState) {
         when (quizFragmentState) {
-            is QuizFragmentState.QuestionsLoaded -> onQuestionsLoaded()
+            is QuizFragmentState.QuestionLoaded -> onQuestionLoaded(quizFragmentState.questionNumber)
             is QuizFragmentState.AnswerSelected -> handleAnswerSelection(
                 quizFragmentState.selectable.textView!!,
                 quizFragmentState.selectable
             )
             is QuizFragmentState.AnswerUnSelected -> resetAnswer()
             is QuizFragmentState.LastQuestion -> lastQuestion()
-            is QuizFragmentState.InCorrectAnswer -> handleSubmittedAnswer(quizFragmentState.color)
+            is QuizFragmentState.InCorrectAnswer -> {
+                handleSubmittedAnswer(quizFragmentState.color)
+            }
             is QuizFragmentState.CorrectAnswer -> handleSubmittedAnswer(quizFragmentState.color)
+            is QuizFragmentState.FinishedQuiz -> {
+                handleFinishedQuiz(quizFragmentState.points)
+            }
+        }
+    }
+
+    private fun handleFinishedQuiz(points: Int) {
+        showGenericDialog(
+            getString(R.string.end_quiz_title),
+            getString(R.string.end_quiz_message, points)
+        ) {
+            hideViews()
+            findNavController().navigate(R.id.action_quizFragment_to_homeFragment)
         }
     }
 
@@ -45,35 +58,51 @@ class QuizFragment : BaseBoundFragment<FragmentQuizBinding, QuizViewModel>() {
         selectedAnswer.setTextColor(getColor(selectable.textColor))
         lastSelectedAnswer = selectedAnswer
         binding.setVariable(BR.selectedAnswer, lastSelectedAnswer!!.text.toString())
-        binding.btnProceedToNextQuestion.isEnabled = true
+        binding.btnProceedToNextQuestion.enable()
     }
 
-    private fun handleSubmittedAnswer(color: Int) {
-        lastSelectedAnswer!!.setBackgroundColor(getColor(color))
+    private fun handleSubmittedAnswer(backgroundColor: Int) = with(binding) {
+        lastSelectedAnswer!!.setBackgroundColor(getColor(backgroundColor))
+        answerA.disable()
+        answerB.disable()
+        answerC.disable()
+        answerD.disable()
+        btnProceedToNextQuestion.disable()
     }
 
     private fun resetAnswer() {
         lastSelectedAnswer?.setBackgroundColor(getColor(R.color.white))
     }
 
-    private fun onQuestionsLoaded() = with(binding) {
+    private fun onQuestionLoaded(questionNumber: Int) = with(binding) {
         questionLoadingProgress.hide()
+        quizProgress.progress = questionNumber
+        showViews()
+        answerA.enable()
+        answerB.enable()
+        answerC.enable()
+        answerD.enable()
+        btnProceedToNextQuestion.disable()
+    }
+
+    private fun hideViews() = with(binding) {
+        question.hide()
+        questionNumber.hide()
+        firstTwoAnswersLl.hide()
+        lastTwoAnswersLl.hide()
+        btnProceedToNextQuestion.hide()
+    }
+
+    private fun showViews() = with(binding) {
         questionNumber.visible()
         question.visible()
         firstTwoAnswersLl.visible()
         lastTwoAnswersLl.visible()
         btnProceedToNextQuestion.visible()
-        btnProceedToNextQuestion.isEnabled = false
     }
 
     private fun lastQuestion() = with(binding) {
-        btnProceedToNextQuestion.text = "Finish quiz"
-        btnProceedToNextQuestion.setOnClickListener {
-            viewModel?.onLastQuestion()
-            requireContext().showToast("Last question settings..")
-        }
+        btnProceedToNextQuestion.text = getString(R.string.btn_finish_quiz_text)
+        btnProceedToNextQuestion.setOnClickListener { viewModel?.onLastQuestion() }
     }
 }
-
-// val argument = requireArguments().getSerializable("ARG") as QuizSettings
-//        requireContext().showToast("Argument -> $argument")

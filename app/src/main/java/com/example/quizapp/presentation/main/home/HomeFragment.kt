@@ -43,7 +43,7 @@ class HomeFragment : BaseBoundFragment<FragmentHomeBinding, HomeViewModel>() {
             is HomeFragmentState.StartQuiz -> {
                 findNavController().navigate(
                     R.id.action_homeFragment_to_quizFragment,
-                    bundleOf("ARG" to fragmentState.quizSettings)
+                    bundleOf(QUIZ_ARGUMENT_NAME to fragmentState.quizSettings)
                 )
             }
         }
@@ -54,5 +54,9 @@ class HomeFragment : BaseBoundFragment<FragmentHomeBinding, HomeViewModel>() {
             adapter = quizAdapter
             layoutManager = GridLayoutManager(requireContext(), 2)
         }
+    }
+
+    companion object {
+        val QUIZ_ARGUMENT_NAME = "QUIZ_ARGUMENT"
     }
 }

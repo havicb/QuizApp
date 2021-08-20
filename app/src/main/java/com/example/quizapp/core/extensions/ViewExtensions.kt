@@ -6,10 +6,14 @@ fun View.visible() {
     visibility = View.VISIBLE
 }
 
-fun View.gone() {
-    visibility = View.GONE
-}
-
 fun View.hide() {
     visibility = View.INVISIBLE
+}
+
+fun View.disable() {
+    isEnabled = false
+}
+
+fun View.enable() {
+    isEnabled = true
 }

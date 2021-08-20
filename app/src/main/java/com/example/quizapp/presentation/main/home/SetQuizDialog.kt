@@ -3,6 +3,7 @@ package com.example.quizapp.presentation.main.home
 import android.app.AlertDialog
 import android.content.Context
 import com.example.quizapp.R
+import com.example.quizapp.presentation.main.quiz.QuizDifficulty
 
 class SetQuizDialog(
     context: Context,
@@ -41,8 +42,4 @@ class SetQuizDialog(
     }
 }
 
-enum class QuizDifficulty(val value: String) {
-    EASY("Easy"),
-    MEDIUM("Medium"),
-    HARD("Hard")
-}
+

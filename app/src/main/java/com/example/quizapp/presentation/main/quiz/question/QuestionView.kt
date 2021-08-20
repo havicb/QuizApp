@@ -5,7 +5,7 @@ import android.text.Html
 import com.example.quizapp.domain.questions.entity.QuestionEntity
 
 data class QuestionView(
-    val questionNumber: Int,
+    val questionNumber: String,
     val title: String,
     val answerA: String,
     val answerB: String,
@@ -13,17 +13,59 @@ data class QuestionView(
     val answerD: String
 )
 
-fun QuestionEntity.toView(): QuestionView {
-    val questionNumber = 1
-    val answerA = correctAnswer
-    val answerB = incorrectAnswers[0]
-    val answerC = incorrectAnswers[1]
-    val answerD = incorrectAnswers[2]
-    var decodedQuestion = ""
-    if (Build.VERSION.SDK_INT >= 24) {
-        decodedQuestion = Html.fromHtml(question, Html.FROM_HTML_MODE_LEGACY).toString()
-    } else {
-        decodedQuestion = Html.fromHtml(question).toString()
+fun QuestionEntity.toView(questionNumber: Int): QuestionView {
+    return getQuestionView(this, questionNumber, getRandomNumber())
+}
+
+private fun getRandomNumber(): Int {
+    return (1..4).random()
+}
+
+private fun getQuestionView(
+    questionEntity: QuestionEntity,
+    questionNumber: Int,
+    correctAnswerPosition: Int
+): QuestionView = with(questionEntity) {
+    return when (correctAnswerPosition) {
+        1 -> QuestionView(
+            "Question $questionNumber",
+            decodeHtml(question),
+            decodeHtml(correctAnswer),
+            decodeHtml(incorrectAnswers[0]),
+            decodeHtml(incorrectAnswers[1]),
+            decodeHtml(incorrectAnswers[2])
+        )
+        2 -> QuestionView(
+            "Question $questionNumber",
+            decodeHtml(question),
+            decodeHtml(incorrectAnswers[0]),
+            decodeHtml(correctAnswer),
+            decodeHtml(incorrectAnswers[1]),
+            decodeHtml(incorrectAnswers[2])
+        )
+        3 -> QuestionView(
+            "Question $questionNumber",
+            decodeHtml(question),
+            decodeHtml(incorrectAnswers[1]),
+            decodeHtml(incorrectAnswers[0]),
+            decodeHtml(correctAnswer),
+            decodeHtml(incorrectAnswers[2])
+        )
+        else -> QuestionView(
+            "Question $questionNumber",
+            decodeHtml(question),
+            decodeHtml(incorrectAnswers[2]),
+            decodeHtml(incorrectAnswers[0]),
+            decodeHtml(incorrectAnswers[1]),
+            decodeHtml(correctAnswer)
+        )
     }
-    return QuestionView(questionNumber, decodedQuestion, answerA, answerB, answerC, answerD)
+}
+
+private fun decodeHtml(string: String): String {
+    return if (Build.VERSION.SDK_INT >= 24) {
+        Html.fromHtml(string, Html.FROM_HTML_MODE_LEGACY).toString()
+    } else {
+        Html.fromHtml(string).toString()
+    }
 }
