@@ -17,7 +17,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField 'String', 'API_BASE_URL', '"https://opentdb.com/"'
-        buildConfigField 'String', 'AUTH_API_BASE_URL', '"https://reqres.in/"'
+        buildConfigField 'String', 'API_AUTH_URL', '"https://thesocialnetworkapp.azurewebsites.net/api/auth/"'
     }
 
     dataBinding {
@@ -72,6 +72,11 @@ dependencies {
     // Picasso
     implementation "com.squareup.picasso:picasso:$picassoVersion"
     implementation "de.hdodenhof:circleimageview:$circleImageViewVersion"
+
+    // Store
+    implementation "androidx.datastore:datastore:$dataStoreVersion"
+    implementation "androidx.datastore:datastore-preferences:$dataStoreVersion"
+
 
     // Testing
     testImplementation "junit:junit:$jUnitVersion"

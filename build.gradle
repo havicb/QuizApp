@@ -31,6 +31,8 @@ buildscript {
         // DI
         daggerVersion = "2.38.1"
 
+        dataStoreVersion = "1.0.0"
+
         picassoVersion = "2.71828"
         circleImageViewVersion = "3.1.0"
     }

@@ -1,9 +1,9 @@
 package com.example.quizapp.presentation.main.login
 
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.example.quizapp.BR
 import com.example.quizapp.R
+import com.example.quizapp.core.extensions.showToast
 import com.example.quizapp.databinding.FragmentLoginBinding
 import com.example.quizapp.presentation.base.view.BaseBoundFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,8 +15,8 @@ class LoginFragment : BaseBoundFragment<FragmentLoginBinding, LoginViewModel>() 
     override val viewModel: LoginViewModel by viewModels()
 
     override fun bindToViewModel() {
-        binding.loginUser.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+        viewModel.loginResponse.observe(viewLifecycleOwner) { res ->
+            showToast(res.toString())
         }
     }
 }

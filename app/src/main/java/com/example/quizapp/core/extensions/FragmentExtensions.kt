@@ -1,11 +1,16 @@
 package com.example.quizapp.core.extensions
 
 import android.app.AlertDialog
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.quizapp.R
 
-fun Fragment.showGenericDialog(title: String, message: String, onButtonClick: (() -> Unit)? = null) {
+fun Fragment.showGenericDialog(
+    title: String,
+    message: String,
+    onButtonClick: (() -> Unit)? = null
+) {
     AlertDialog.Builder(requireContext()).apply {
         setTitle(title)
         setMessage(message)
@@ -20,4 +25,8 @@ fun Fragment.showGenericDialog(title: String, message: String, onButtonClick: ((
 
 fun Fragment.getColor(color: Int): Int {
     return ContextCompat.getColor(requireContext(), color)
+}
+
+fun Fragment.showToast(message: String) {
+    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 }

@@ -1,7 +1,9 @@
-package com.example.quizapp.di
+package com.example.quizapp.di.module
 
 import com.example.quizapp.data.DefaultNetworkConfig
 import com.example.quizapp.data.NetworkConfig
+import com.example.quizapp.di.qualifiers.AuthRetrofit
+import com.example.quizapp.di.qualifiers.QuestionRetrofit
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -13,6 +15,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import com.google.gson.GsonBuilder
+
+import com.google.gson.Gson
+
+
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -33,13 +41,29 @@ class NetworkModule {
     }
 
     @Singleton
+    @QuestionRetrofit
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient, networkConfig: NetworkConfig): Retrofit {
+    fun provideQuestionRetrofit(
+        okHttpClient: OkHttpClient,
+        networkConfig: NetworkConfig
+    ): Retrofit {
         return Retrofit.Builder().apply {
             addConverterFactory(GsonConverterFactory.create())
             client(okHttpClient)
             addCallAdapterFactory(CoroutineCallAdapterFactory.invoke())
             baseUrl(networkConfig.baseUrl)
+        }.build()
+    }
+
+    @Singleton
+    @AuthRetrofit
+    @Provides
+    fun provideAuthRetrofit(okHttpClient: OkHttpClient, networkConfig: NetworkConfig): Retrofit {
+        return Retrofit.Builder().apply {
+            addConverterFactory(GsonConverterFactory.create())
+            client(okHttpClient)
+            addCallAdapterFactory(CoroutineCallAdapterFactory.invoke())
+            baseUrl(networkConfig.authUrl)
         }.build()
     }
 
