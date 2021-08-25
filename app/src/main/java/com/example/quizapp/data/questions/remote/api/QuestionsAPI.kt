@@ -8,10 +8,10 @@ import retrofit2.http.Query
 
 interface QuestionsAPI {
     @GET("api.php")
-    fun fetchQuestionsAsync(
+    suspend fun fetchQuestionsAsync(
         @Query("amount") amount: Int,
         @Query("category") category: Int,
         @Query("difficulty") difficulty: String,
         @Query("type") type: String
-    ): Deferred<Response<QuestionResponse>>
+    ): Response<QuestionResponse>
 }

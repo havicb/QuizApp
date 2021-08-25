@@ -40,7 +40,17 @@ class QuizFragment : BaseBoundFragment<FragmentQuizBinding, QuizViewModel>() {
             is QuizFragmentState.FinishedQuiz -> {
                 handleFinishedQuiz(quizFragmentState.points)
             }
+            is QuizFragmentState.Loading -> {
+                handleLoading(quizFragmentState.isLoading)
+            }
         }
+    }
+
+    private fun handleLoading(isLoading: Boolean) = with(binding) {
+        if (isLoading)
+            questionLoadingProgress.visible()
+        else
+            questionLoadingProgress.hide()
     }
 
     private fun handleFinishedQuiz(points: Int) {

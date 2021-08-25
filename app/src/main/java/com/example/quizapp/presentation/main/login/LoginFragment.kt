@@ -4,7 +4,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.quizapp.BR
 import com.example.quizapp.R
+import com.example.quizapp.core.extensions.hide
 import com.example.quizapp.core.extensions.showToast
+import com.example.quizapp.core.extensions.visible
 import com.example.quizapp.databinding.FragmentLoginBinding
 import com.example.quizapp.presentation.base.view.BaseBoundFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,9 +34,19 @@ class LoginFragment : BaseBoundFragment<FragmentLoginBinding, LoginViewModel>() 
                 viewModel.loginSuccessful()
             }
             is LoginFragmentState.LoginFailed -> {
-                showToast("Failed to login")
+                showToast(loginFragmentState.message)
+            }
+            is LoginFragmentState.Loading -> {
+                handleLoading(loginFragmentState.isLoading)
             }
         }
+    }
+
+    private fun handleLoading(isLoading: Boolean) = with(binding) {
+        if (isLoading)
+            loginProgress.visible()
+        else
+            loginProgress.hide()
     }
 
     override fun initUI() = with(binding) {

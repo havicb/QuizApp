@@ -10,9 +10,8 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface LoginAPI {
-
     @POST("login")
-    fun loginAsync(
+    suspend fun loginUser(
         @Body loginRequest: LoginRequest
-    ): Deferred<Response<LoginResponse>>
+    ): Response<LoginResponse>
 }

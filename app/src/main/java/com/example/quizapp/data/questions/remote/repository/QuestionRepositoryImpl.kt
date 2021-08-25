@@ -1,9 +1,12 @@
 package com.example.quizapp.data.questions.remote.repository
 
+import com.example.quizapp.data.ErrorResponse
 import com.example.quizapp.data.questions.remote.api.QuestionsAPI
-import com.example.quizapp.data.questions.remote.dto.QuestionResponse
-import kotlinx.coroutines.Deferred
-import retrofit2.Response
+import com.example.quizapp.domain.common.BaseResult
+import com.example.quizapp.domain.questions.entity.QuestionData
+import com.example.quizapp.domain.questions.entity.toDomain
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class QuestionRepositoryImpl @Inject constructor(
@@ -14,7 +17,23 @@ class QuestionRepositoryImpl @Inject constructor(
         category: Int,
         difficulty: String,
         type: String
-    ): Deferred<Response<QuestionResponse>> {
-        return questionsApi.fetchQuestionsAsync(amount, category, difficulty, type)
+    ): Flow<BaseResult<QuestionData, ErrorResponse>> {
+        return flow {
+            val response = questionsApi.fetchQuestionsAsync(amount, category, difficulty, type)
+            if (response.isSuccessful) {
+                emit(
+                    BaseResult.Success(
+                        QuestionData(
+                            response.body()?.questions!!.map {
+                                // i know this job is for domain layer, I will improve this little bit later
+                                it.toDomain()
+                            }
+                        )
+                    )
+                )
+            } else {
+                emit(BaseResult.Error(ErrorResponse(response.code(), response.message())))
+            }
+        }
     }
 }

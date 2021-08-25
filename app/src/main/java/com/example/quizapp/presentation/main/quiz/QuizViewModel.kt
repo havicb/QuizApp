@@ -7,15 +7,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.quizapp.R
+import com.example.quizapp.data.ErrorResponse
+import com.example.quizapp.domain.common.BaseResult
+import com.example.quizapp.domain.questions.entity.QuestionData
 import com.example.quizapp.domain.questions.entity.QuestionEntity
 import com.example.quizapp.domain.questions.usecase.GetQuestionsUseCase
 import com.example.quizapp.presentation.base.view.BaseViewModel
-import com.example.quizapp.presentation.main.home.HomeFragment
 import com.example.quizapp.presentation.main.home.QuizSettings
 import com.example.quizapp.presentation.main.quiz.question.Selectable
 import com.example.quizapp.presentation.main.quiz.question.toView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -49,11 +54,36 @@ class QuizViewModel @Inject constructor(
     }
 
     private fun fetch(quizSettings: QuizSettings) = viewModelScope.launch {
-        val data = questionsUseCase.fetchQuestionData(
+        questionsUseCase.fetchQuestionData(
             quizSettings.numberOfQuestions,
             quizSettings.category.apiValue,
             quizSettings.difficulty.lowercase()
-        )
+        ).onStart {
+            showLoading()
+        }.catch { ex ->
+            hideLoading()
+        }.collect { result ->
+            hideLoading()
+            when (result) {
+                is BaseResult.Success -> handleQuestions(result.data)
+                is BaseResult.Error -> handleError(result.response)
+            }
+        }
+    }
+
+    private fun hideLoading() {
+        _quizFragmentState.value = QuizFragmentState.Loading(true)
+    }
+
+    private fun showLoading() {
+        _quizFragmentState.value = QuizFragmentState.Loading(false)
+    }
+
+    private fun handleError(response: ErrorResponse) {
+        // todo
+    }
+
+    private fun handleQuestions(data: QuestionData) {
         for (i in (data.questions.size - 1) downTo 0) {
             questionsData.add(data.questions[i])
         }
@@ -110,6 +140,7 @@ class QuizViewModel @Inject constructor(
 }
 
 sealed class QuizFragmentState {
+    data class Loading(val isLoading: Boolean) : QuizFragmentState()
     data class QuestionLoaded(val questionNumber: Int) : QuizFragmentState()
     object AnswerUnSelected : QuizFragmentState()
     data class AnswerSelected(val selectable: Selectable) : QuizFragmentState()

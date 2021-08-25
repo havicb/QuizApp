@@ -6,7 +6,6 @@
     tools:layout="@layout/fragment_login">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.example.quizapp.presentation.main.login.LoginViewModel" />
@@ -22,12 +21,20 @@
         android:paddingEnd="@dimen/normal_125"
         android:paddingBottom="@dimen/large_175">
 
+        <ProgressBar
+            android:id="@+id/loginProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible"/>
+
         <TextView
             android:id="@+id/login_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/large_125"
+            android:layout_below="@id/loginProgress"
+            android:layout_marginTop="@dimen/normal_125"
             android:text="@string/login_title"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_large_125"

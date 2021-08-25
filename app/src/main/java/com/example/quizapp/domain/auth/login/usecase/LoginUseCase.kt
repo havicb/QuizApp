@@ -1,18 +1,15 @@
 package com.example.quizapp.domain.auth.login.usecase
 
+import com.example.quizapp.data.ErrorResponse
 import com.example.quizapp.data.auth.login.remote.dto.LoginRequest
-import com.example.quizapp.data.auth.login.remote.dto.LoginResponse
 import com.example.quizapp.data.auth.login.remote.repository.LoginRepository
+import com.example.quizapp.domain.auth.login.entity.LoginEntity
+import com.example.quizapp.domain.common.BaseResult
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(private val loginRepository: LoginRepository) {
-
-    suspend fun loginUser(loginRequest: LoginRequest): LoginResponse {
-        val response = loginRepository.loginAsync(loginRequest).await()
-        return if (response.isSuccessful) {
-            response.body()!!
-        } else {
-            LoginResponse(null, "Not authenticated", false)
-        }
+    suspend fun loginUser(loginRequest: LoginRequest): Flow<BaseResult<LoginEntity, ErrorResponse>> {
+        return loginRepository.login(loginRequest)
     }
 }

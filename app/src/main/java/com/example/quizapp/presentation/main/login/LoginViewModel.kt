@@ -2,15 +2,15 @@ package com.example.quizapp.presentation.main.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.quizapp.data.ErrorResponse
 import com.example.quizapp.data.auth.login.remote.dto.LoginRequest
-import com.example.quizapp.data.auth.login.remote.dto.LoginResponse
 import com.example.quizapp.data.prefstore.PrefsStore
+import com.example.quizapp.domain.auth.login.entity.LoginEntity
 import com.example.quizapp.domain.auth.login.usecase.LoginUseCase
+import com.example.quizapp.domain.common.BaseResult
 import com.example.quizapp.presentation.base.view.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,7 +21,6 @@ class LoginViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private var _loginFragmentState = MutableStateFlow<LoginFragmentState>(LoginFragmentState.Init)
-    private var _loginResponse = MutableLiveData<LoginResponse>()
 
     val email = MutableLiveData("")
     val password = MutableLiveData("")
@@ -29,13 +28,7 @@ class LoginViewModel @Inject constructor(
     val loginFragmentState: StateFlow<LoginFragmentState> get() = _loginFragmentState
 
     init {
-        viewModelScope.launch {
-            prefsStore.getAuthToken().collect {
-                if (it != "") {
-                    _loginFragmentState.value = LoginFragmentState.LoginSuccessful
-                }
-            }
-        }
+        viewModelScope.launch { getToken() }
     }
 
     fun loginSuccessful() {
@@ -43,22 +36,53 @@ class LoginViewModel @Inject constructor(
     }
 
     fun loginUser() = viewModelScope.launch {
-        val response = loginUseCase.loginUser(LoginRequest(email.value!!, password.value!!))
-        if (response.success) {
-            _loginFragmentState.value = LoginFragmentState.LoginSuccessful
-            prefsStore.saveAuthToken(response.authToken!!)
-        } else {
-            _loginFragmentState.value = LoginFragmentState.LoginFailed
-        }
+        loginUseCase.loginUser(LoginRequest(email.value!!, password.value!!))
+            .onStart {
+                showLoading()
+            }.catch { exception ->
+                hideLoading()
+            }.collect { result ->
+                hideLoading()
+                when (result) {
+                    is BaseResult.Success -> handleSuccessLogin(result)
+                    is BaseResult.Error -> handleLoginError(result)
+                }
+            }
+    }
+
+    private fun handleLoginError(errorResponse: BaseResult.Error<ErrorResponse>) {
+        _loginFragmentState.value = LoginFragmentState.LoginFailed(errorResponse.response.message)
+    }
+
+    private suspend fun handleSuccessLogin(successResponse: BaseResult.Success<LoginEntity>) {
+        _loginFragmentState.value = LoginFragmentState.LoginSuccessful
+        prefsStore.saveAuthToken(successResponse.data.authToken!!)
+    }
+
+    private fun showLoading() {
+        _loginFragmentState.value = LoginFragmentState.Loading(true)
+    }
+
+    private fun hideLoading() {
+        _loginFragmentState.value = LoginFragmentState.Loading(false)
     }
 
     fun registerButtonSelected() {
         navigate(LoginFragmentDirections.actionLoginFragmentToRegistrationFragment())
+    }
+
+    private suspend fun getToken() {
+        prefsStore.getAuthToken().collect {
+            if (it != "") {
+                _loginFragmentState.value = LoginFragmentState.LoginSuccessful
+            }
+        }
     }
 }
 
 sealed class LoginFragmentState {
     object Init : LoginFragmentState()
     object LoginSuccessful : LoginFragmentState()
-    object LoginFailed : LoginFragmentState()
+    data class Loading(val isLoading: Boolean) : LoginFragmentState()
+    data class LoginFailed(val message: String) : LoginFragmentState()
 }
