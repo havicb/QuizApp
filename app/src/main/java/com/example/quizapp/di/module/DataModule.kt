@@ -11,8 +11,8 @@ import com.example.quizapp.data.quiz.local.QuizLocalRepository
 import com.example.quizapp.data.quiz.local.QuizLocalRepositoryImpl
 import com.example.quizapp.di.qualifiers.AuthRetrofit
 import com.example.quizapp.di.qualifiers.QuestionRetrofit
-import com.example.quizapp.prefstore.PrefsStore
-import com.example.quizapp.prefstore.PrefsStoreImpl
+import com.example.quizapp.data.prefstore.PrefsStore
+import com.example.quizapp.data.prefstore.PrefsStoreImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

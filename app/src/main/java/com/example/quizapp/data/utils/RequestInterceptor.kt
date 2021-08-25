@@ -1,10 +1,11 @@
 package com.example.quizapp.data.utils
 
-import com.example.quizapp.prefstore.PrefsStore
+import com.example.quizapp.data.prefstore.PrefsStore
 import kotlinx.coroutines.flow.collect
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
+
 
 class RequestInterceptor @Inject constructor(private val prefsStore: PrefsStore) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {

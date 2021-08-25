@@ -25,4 +25,4 @@ class MainActivity : BaseBoundActivity<MainViewModel, ActivityMainBinding>() {
     override fun bindToViewModel() {}
 }
 
-class MainViewModel : BaseViewModel()
+class MainViewModel() : BaseViewModel()

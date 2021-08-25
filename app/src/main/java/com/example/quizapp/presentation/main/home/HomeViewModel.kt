@@ -39,11 +39,13 @@ class HomeViewModel @Inject constructor(
     }
 
     fun startQuiz(difficulty: QuizDifficulty) {
-        _homeFragmentState.value = HomeFragmentState.StartQuiz(
-            QuizSettings(
-                Helpers.findCategoryByTitle(quizSelected!!),
-                difficulty.value,
-                10
+        navigate(
+            HomeFragmentDirections.actionHomeFragmentToQuizFragment(
+                QuizSettings(
+                    Helpers.findCategoryByTitle(quizSelected!!),
+                    difficulty.value,
+                    10
+                )
             )
         )
     }
@@ -51,7 +53,6 @@ class HomeViewModel @Inject constructor(
 
 sealed class HomeFragmentState {
     data class QuizSelected(val title: String) : HomeFragmentState()
-    data class StartQuiz(val quizSettings: QuizSettings) : HomeFragmentState()
 }
 
 data class QuizSettings(

@@ -11,6 +11,16 @@
         android:layout_height="match_parent"
         tools:context=".RegistrationFragment">
 
+        <TextView
+            android:id="@+id/registration_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/large_125"
+            android:text="@string/register_for_the_app"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_large_125"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 </layout>

@@ -1,4 +1,4 @@
-package com.example.quizapp.prefstore
+package com.example.quizapp.data.prefstore
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
@@ -22,6 +22,12 @@ class PrefsStoreImpl(context: Context) : PrefsStore {
     override suspend fun getAuthToken(): Flow<String> = with(dataStore.data) {
         return map { preferences ->
             preferences[PreferenceKeys.AUTH_TOKEN] ?: ""
+        }
+    }
+
+    override suspend fun clear() {
+        dataStore.edit {
+            it.clear()
         }
     }
 

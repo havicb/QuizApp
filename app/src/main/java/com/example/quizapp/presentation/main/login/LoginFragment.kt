@@ -1,12 +1,14 @@
 package com.example.quizapp.presentation.main.login
 
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.quizapp.BR
 import com.example.quizapp.R
 import com.example.quizapp.core.extensions.showToast
 import com.example.quizapp.databinding.FragmentLoginBinding
 import com.example.quizapp.presentation.base.view.BaseBoundFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class LoginFragment : BaseBoundFragment<FragmentLoginBinding, LoginViewModel>() {
@@ -15,8 +17,29 @@ class LoginFragment : BaseBoundFragment<FragmentLoginBinding, LoginViewModel>() 
     override val viewModel: LoginViewModel by viewModels()
 
     override fun bindToViewModel() {
-        viewModel.loginResponse.observe(viewLifecycleOwner) { res ->
-            showToast(res.toString())
+        lifecycleScope.launchWhenResumed {
+            viewModel.loginFragmentState.collect {
+                handleFragmentState(it)
+            }
+        }
+    }
+
+    private fun handleFragmentState(loginFragmentState: LoginFragmentState) {
+        when (loginFragmentState) {
+            is LoginFragmentState.Init -> Unit
+            is LoginFragmentState.LoginSuccessful -> {
+                showToast("Login successful")
+                viewModel.loginSuccessful()
+            }
+            is LoginFragmentState.LoginFailed -> {
+                showToast("Failed to login")
+            }
+        }
+    }
+
+    override fun initUI() = with(binding) {
+        goToRegister.setOnClickListener {
+            viewModel?.registerButtonSelected()
         }
     }
 }

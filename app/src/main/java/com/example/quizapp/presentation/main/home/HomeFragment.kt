@@ -1,6 +1,5 @@
 package com.example.quizapp.presentation.main.home
 
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -40,12 +39,6 @@ class HomeFragment : BaseBoundFragment<FragmentHomeBinding, HomeViewModel>() {
                 requireContext(),
                 fragmentState.title
             ) { viewModel.startQuiz(it) }
-            is HomeFragmentState.StartQuiz -> {
-                findNavController().navigate(
-                    R.id.action_homeFragment_to_quizFragment,
-                    bundleOf(QUIZ_ARGUMENT_NAME to fragmentState.quizSettings)
-                )
-            }
         }
     }
 
@@ -54,9 +47,5 @@ class HomeFragment : BaseBoundFragment<FragmentHomeBinding, HomeViewModel>() {
             adapter = quizAdapter
             layoutManager = GridLayoutManager(requireContext(), 2)
         }
-    }
-
-    companion object {
-        val QUIZ_ARGUMENT_NAME = "QUIZ_ARGUMENT"
     }
 }

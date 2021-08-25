@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id "dagger.hilt.android.plugin"
+    id "androidx.navigation.safeargs.kotlin"
 }
 
 android {
@@ -57,6 +58,11 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$ktxCoroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$ktxCoroutinesVersion"
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$ktxCoroutinesAdapterVersion"
+
+    // Lifecycle
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"

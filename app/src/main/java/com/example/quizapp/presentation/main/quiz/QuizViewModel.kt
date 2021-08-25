@@ -44,7 +44,7 @@ class QuizViewModel @Inject constructor(
     val correctAnswer = MutableLiveData<String>()
 
     init {
-        quizSettings = state.get<QuizSettings>(HomeFragment.QUIZ_ARGUMENT_NAME)
+        quizSettings = state.get<QuizSettings>("quizSettings")
         fetch(quizSettings!!)
     }
 
