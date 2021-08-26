@@ -39,6 +39,9 @@ class LoginFragment : BaseBoundFragment<FragmentLoginBinding, LoginViewModel>() 
             is LoginFragmentState.Loading -> {
                 handleLoading(loginFragmentState.isLoading)
             }
+            is LoginFragmentState.ShowToast -> {
+                showToast(loginFragmentState.message)
+            }
         }
     }
 

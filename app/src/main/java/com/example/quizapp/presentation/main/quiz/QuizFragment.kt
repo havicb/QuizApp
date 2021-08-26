@@ -2,7 +2,6 @@ package com.example.quizapp.presentation.main.quiz
 
 import android.widget.TextView
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.example.quizapp.BR
 import com.example.quizapp.R
 import com.example.quizapp.core.extensions.*
@@ -40,17 +39,8 @@ class QuizFragment : BaseBoundFragment<FragmentQuizBinding, QuizViewModel>() {
             is QuizFragmentState.FinishedQuiz -> {
                 handleFinishedQuiz(quizFragmentState.points)
             }
-            is QuizFragmentState.Loading -> {
-                handleLoading(quizFragmentState.isLoading)
-            }
+            is QuizFragmentState.ShowToast -> showToast(quizFragmentState.message)
         }
-    }
-
-    private fun handleLoading(isLoading: Boolean) = with(binding) {
-        if (isLoading)
-            questionLoadingProgress.visible()
-        else
-            questionLoadingProgress.hide()
     }
 
     private fun handleFinishedQuiz(points: Int) {
@@ -59,7 +49,7 @@ class QuizFragment : BaseBoundFragment<FragmentQuizBinding, QuizViewModel>() {
             getString(R.string.end_quiz_message, points)
         ) {
             hideViews()
-            findNavController().navigate(R.id.action_quizFragment_to_homeFragment)
+            viewModel.onQuizFinished()
         }
     }
 

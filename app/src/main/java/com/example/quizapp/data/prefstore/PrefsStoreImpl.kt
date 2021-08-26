@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.map
 
 private val Context.dataStore by preferencesDataStore(PrefsStoreImpl.PREFERENCE_STORE_NAME)
 
+// New android async library for storing small amount of data
 class PrefsStoreImpl(context: Context) : PrefsStore {
 
     private val dataStore = context.dataStore
@@ -25,8 +26,8 @@ class PrefsStoreImpl(context: Context) : PrefsStore {
         }
     }
 
-    override suspend fun clear() {
-        dataStore.edit {
+    override suspend fun clear(): Unit = with(dataStore) {
+        edit {
             it.clear()
         }
     }

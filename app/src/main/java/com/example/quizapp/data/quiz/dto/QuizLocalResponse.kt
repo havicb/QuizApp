@@ -1,4 +1,4 @@
-package com.example.quizapp.data.quiz.local
+package com.example.quizapp.data.quiz.dto
 
 import com.google.gson.annotations.SerializedName
 

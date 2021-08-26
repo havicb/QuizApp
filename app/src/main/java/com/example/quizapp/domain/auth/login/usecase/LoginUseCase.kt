@@ -1,8 +1,8 @@
 package com.example.quizapp.domain.auth.login.usecase
 
 import com.example.quizapp.data.ErrorResponse
-import com.example.quizapp.data.auth.login.remote.dto.LoginRequest
-import com.example.quizapp.data.auth.login.remote.repository.LoginRepository
+import com.example.quizapp.data.auth.login.dto.LoginRequest
+import com.example.quizapp.data.auth.login.repository.LoginRepository
 import com.example.quizapp.domain.auth.login.entity.LoginEntity
 import com.example.quizapp.domain.common.BaseResult
 import kotlinx.coroutines.flow.Flow

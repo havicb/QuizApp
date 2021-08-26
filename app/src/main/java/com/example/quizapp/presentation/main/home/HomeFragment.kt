@@ -1,7 +1,6 @@
 package com.example.quizapp.presentation.main.home
 
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.quizapp.BR
 import com.example.quizapp.R

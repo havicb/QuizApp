@@ -1,18 +1,18 @@
 package com.example.quizapp.di.module
 
 import android.content.Context
-import com.example.quizapp.data.auth.login.remote.api.LoginAPI
-import com.example.quizapp.data.auth.login.remote.repository.LoginRepository
-import com.example.quizapp.data.auth.login.remote.repository.LoginRepositoryImpl
-import com.example.quizapp.data.questions.remote.api.QuestionsAPI
-import com.example.quizapp.data.questions.remote.repository.QuestionRepository
-import com.example.quizapp.data.questions.remote.repository.QuestionRepositoryImpl
-import com.example.quizapp.data.quiz.local.QuizLocalRepository
-import com.example.quizapp.data.quiz.local.QuizLocalRepositoryImpl
-import com.example.quizapp.di.qualifiers.AuthRetrofit
-import com.example.quizapp.di.qualifiers.QuestionRetrofit
+import com.example.quizapp.data.auth.login.api.LoginAPI
+import com.example.quizapp.data.auth.login.repository.LoginRepository
+import com.example.quizapp.data.auth.login.repository.LoginRepositoryImpl
 import com.example.quizapp.data.prefstore.PrefsStore
 import com.example.quizapp.data.prefstore.PrefsStoreImpl
+import com.example.quizapp.data.questions.api.QuestionsAPI
+import com.example.quizapp.data.questions.repository.QuestionRepository
+import com.example.quizapp.data.questions.repository.QuestionRepositoryImpl
+import com.example.quizapp.data.quiz.repository.QuizRepository
+import com.example.quizapp.data.quiz.repository.QuizRepositoryImpl
+import com.example.quizapp.di.qualifiers.AuthRetrofit
+import com.example.quizapp.di.qualifiers.QuestionRetrofit
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,8 +26,8 @@ import javax.inject.Singleton
 class DataModule {
     @Provides
     @Singleton
-    fun provideQuizLocalRepository(@ApplicationContext context: Context): QuizLocalRepository =
-        QuizLocalRepositoryImpl(context)
+    fun provideQuizLocalRepository(@ApplicationContext context: Context): QuizRepository =
+        QuizRepositoryImpl(context)
 
     @Provides
     @Singleton

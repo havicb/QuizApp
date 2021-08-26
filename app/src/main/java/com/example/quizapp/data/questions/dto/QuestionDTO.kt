@@ -1,4 +1,4 @@
-package com.example.quizapp.data.questions.remote.dto
+package com.example.quizapp.data.questions.dto
 
 import com.google.gson.annotations.SerializedName
 

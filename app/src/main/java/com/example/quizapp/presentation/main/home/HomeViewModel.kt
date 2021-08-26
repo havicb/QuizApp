@@ -3,7 +3,7 @@ package com.example.quizapp.presentation.main.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.quizapp.core.Helpers
-import com.example.quizapp.domain.quiz.entity.QuizData
+import com.example.quizapp.domain.quiz.entity.QuizEntity
 import com.example.quizapp.domain.quiz.entity.toView
 import com.example.quizapp.domain.quiz.usecase.GetQuizDataUseCase
 import com.example.quizapp.presentation.base.view.BaseViewModel
@@ -18,7 +18,7 @@ class HomeViewModel @Inject constructor(
     quizDataUseCase: GetQuizDataUseCase
 ) : BaseViewModel() {
 
-    private var quizData: QuizData = quizDataUseCase.fetchQuizData()
+    private var quizzes: List<QuizEntity> = quizDataUseCase.fetchQuizData()
     private var quizSelected: String? = null
 
     private val _quiz = MutableLiveData<List<QuizView>>()
@@ -28,7 +28,7 @@ class HomeViewModel @Inject constructor(
     val homeFragmentState: LiveData<HomeFragmentState> get() = _homeFragmentState
 
     init {
-        _quiz.value = quizData.quizzes.map {
+        _quiz.value = quizzes.map {
             it.toView()
         }
     }

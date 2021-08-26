@@ -41,5 +41,3 @@ class SetQuizDialog(
         return arrayOf(QuizDifficulty.EASY, QuizDifficulty.MEDIUM, QuizDifficulty.HARD)[item]
     }
 }
-
-

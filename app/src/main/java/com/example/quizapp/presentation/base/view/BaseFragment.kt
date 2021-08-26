@@ -35,6 +35,7 @@ abstract class BaseFragment<ViewBindingType : ViewDataBinding> : Fragment() {
 
     // this method will be called before inflating the view
     abstract fun preInflate()
+
     // this method will be called after inflating the view
     abstract fun postInflate(viewBindingType: ViewDataBinding?)
 }

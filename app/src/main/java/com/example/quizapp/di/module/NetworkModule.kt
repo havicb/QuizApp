@@ -15,12 +15,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import com.google.gson.GsonBuilder
-
-import com.google.gson.Gson
-
-
-
 
 @Module
 @InstallIn(SingletonComponent::class)

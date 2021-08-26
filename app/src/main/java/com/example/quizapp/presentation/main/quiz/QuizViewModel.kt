@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.quizapp.R
 import com.example.quizapp.data.ErrorResponse
 import com.example.quizapp.domain.common.BaseResult
-import com.example.quizapp.domain.questions.entity.QuestionData
 import com.example.quizapp.domain.questions.entity.QuestionEntity
 import com.example.quizapp.domain.questions.usecase.GetQuestionsUseCase
 import com.example.quizapp.presentation.base.view.BaseViewModel
@@ -20,7 +19,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -58,12 +56,9 @@ class QuizViewModel @Inject constructor(
             quizSettings.numberOfQuestions,
             quizSettings.category.apiValue,
             quizSettings.difficulty.lowercase()
-        ).onStart {
-            showLoading()
-        }.catch { ex ->
-            hideLoading()
+        ).catch { ex ->
+            showToast(ex.localizedMessage)
         }.collect { result ->
-            hideLoading()
             when (result) {
                 is BaseResult.Success -> handleQuestions(result.data)
                 is BaseResult.Error -> handleError(result.response)
@@ -71,21 +66,17 @@ class QuizViewModel @Inject constructor(
         }
     }
 
-    private fun hideLoading() {
-        _quizFragmentState.value = QuizFragmentState.Loading(true)
-    }
-
-    private fun showLoading() {
-        _quizFragmentState.value = QuizFragmentState.Loading(false)
+    private fun showToast(localizedMessage: String) {
+        _quizFragmentState.value = QuizFragmentState.ShowToast(localizedMessage)
     }
 
     private fun handleError(response: ErrorResponse) {
         // todo
     }
 
-    private fun handleQuestions(data: QuestionData) {
-        for (i in (data.questions.size - 1) downTo 0) {
-            questionsData.add(data.questions[i])
+    private fun handleQuestions(questions: List<QuestionEntity>) {
+        for (i in (questions.size - 1) downTo 0) {
+            questionsData.add(questions[i])
         }
         handleNewQuestion(questionsData.pop())
     }
@@ -137,16 +128,20 @@ class QuizViewModel @Inject constructor(
         answerC.value = questionView.answerC
         answerD.value = questionView.answerD
     }
+
+    fun onQuizFinished() {
+        navigate(QuizFragmentDirections.actionQuizFragmentToHomeFragment())
+    }
 }
 
 sealed class QuizFragmentState {
-    data class Loading(val isLoading: Boolean) : QuizFragmentState()
     data class QuestionLoaded(val questionNumber: Int) : QuizFragmentState()
-    object AnswerUnSelected : QuizFragmentState()
     data class AnswerSelected(val selectable: Selectable) : QuizFragmentState()
     data class CorrectAnswer(val color: Int = R.color.lightGreen) : QuizFragmentState()
     data class InCorrectAnswer(val color: Int = R.color.red) : QuizFragmentState()
     data class FinishedQuiz(val points: Int) : QuizFragmentState()
+    data class ShowToast(val message: String) : QuizFragmentState()
+    object AnswerUnSelected : QuizFragmentState()
     object LastQuestion : QuizFragmentState()
 }
 

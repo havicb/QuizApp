@@ -3,7 +3,7 @@ package com.example.quizapp.presentation.main.login
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.quizapp.data.ErrorResponse
-import com.example.quizapp.data.auth.login.remote.dto.LoginRequest
+import com.example.quizapp.data.auth.login.dto.LoginRequest
 import com.example.quizapp.data.prefstore.PrefsStore
 import com.example.quizapp.domain.auth.login.entity.LoginEntity
 import com.example.quizapp.domain.auth.login.usecase.LoginUseCase
@@ -41,6 +41,7 @@ class LoginViewModel @Inject constructor(
                 showLoading()
             }.catch { exception ->
                 hideLoading()
+                showToast(exception.localizedMessage!!)
             }.collect { result ->
                 hideLoading()
                 when (result) {
@@ -48,6 +49,10 @@ class LoginViewModel @Inject constructor(
                     is BaseResult.Error -> handleLoginError(result)
                 }
             }
+    }
+
+    private fun showToast(localizedMessage: String) {
+        _loginFragmentState.value = LoginFragmentState.ShowToast(localizedMessage)
     }
 
     private fun handleLoginError(errorResponse: BaseResult.Error<ErrorResponse>) {
@@ -85,4 +90,5 @@ sealed class LoginFragmentState {
     object LoginSuccessful : LoginFragmentState()
     data class Loading(val isLoading: Boolean) : LoginFragmentState()
     data class LoginFailed(val message: String) : LoginFragmentState()
+    data class ShowToast(val message: String) : LoginFragmentState()
 }
