@@ -10,6 +10,7 @@ import com.example.quizapp.domain.auth.login.usecase.LoginUseCase
 import com.example.quizapp.domain.common.BaseResult
 import com.example.quizapp.presentation.base.view.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -79,7 +80,10 @@ class LoginViewModel @Inject constructor(
     private suspend fun getToken() {
         prefsStore.getAuthToken().collect {
             if (it != "") {
+                delay(1000)
                 _loginFragmentState.value = LoginFragmentState.LoginSuccessful
+            } else {
+                _loginFragmentState.value = LoginFragmentState.ShowLogin
             }
         }
     }
@@ -87,6 +91,7 @@ class LoginViewModel @Inject constructor(
 
 sealed class LoginFragmentState {
     object Init : LoginFragmentState()
+    object ShowLogin : LoginFragmentState()
     object LoginSuccessful : LoginFragmentState()
     data class Loading(val isLoading: Boolean) : LoginFragmentState()
     data class LoginFailed(val message: String) : LoginFragmentState()

@@ -29,20 +29,17 @@ class LoginFragment : BaseBoundFragment<FragmentLoginBinding, LoginViewModel>() 
     private fun handleFragmentState(loginFragmentState: LoginFragmentState) {
         when (loginFragmentState) {
             is LoginFragmentState.Init -> Unit
-            is LoginFragmentState.LoginSuccessful -> {
-                showToast("Login successful")
-                viewModel.loginSuccessful()
-            }
-            is LoginFragmentState.LoginFailed -> {
-                showToast(loginFragmentState.message)
-            }
-            is LoginFragmentState.Loading -> {
-                handleLoading(loginFragmentState.isLoading)
-            }
-            is LoginFragmentState.ShowToast -> {
-                showToast(loginFragmentState.message)
-            }
+            is LoginFragmentState.LoginSuccessful -> { viewModel.loginSuccessful() }
+            is LoginFragmentState.LoginFailed -> { showToast(loginFragmentState.message) }
+            is LoginFragmentState.Loading -> { handleLoading(loginFragmentState.isLoading) }
+            is LoginFragmentState.ShowToast -> { showToast(loginFragmentState.message) }
+            is LoginFragmentState.ShowLogin -> showLogin()
         }
+    }
+
+    private fun showLogin() = with(binding) {
+        loginLoading.hide()
+        loginViews.visible()
     }
 
     private fun handleLoading(isLoading: Boolean) = with(binding) {
