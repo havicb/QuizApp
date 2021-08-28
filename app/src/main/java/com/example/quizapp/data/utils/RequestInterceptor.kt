@@ -6,7 +6,6 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
-
 class RequestInterceptor @Inject constructor(private val prefsStore: PrefsStore) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         var token = ""

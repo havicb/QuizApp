@@ -8,4 +8,3 @@ data class QuestionResponse(
     @SerializedName("results")
     val questions: List<QuestionDTO>
 )
-

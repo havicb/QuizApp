@@ -50,12 +50,13 @@ class QuizViewModel @Inject constructor(
     }
 
     private fun fetch(quizSettings: QuizSettings) = viewModelScope.launch {
-        val call = questionsUseCase.fetchQuestionData(
-            quizSettings.numberOfQuestions,
-            quizSettings.category.apiValue,
-            quizSettings.difficulty.lowercase()
-        )
-        when (call) {
+        when (
+            val call = questionsUseCase.fetchQuestionData(
+                quizSettings.numberOfQuestions,
+                quizSettings.category.apiValue,
+                quizSettings.difficulty.lowercase()
+            )
+        ) {
             is BaseResult.Success -> handleQuestions(call.data)
             is BaseResult.Error -> handleError(call.response)
         }
@@ -66,7 +67,7 @@ class QuizViewModel @Inject constructor(
     }
 
     private fun handleError(response: ErrorResponse) {
-        // todo
+        showToast(response.message)
     }
 
     private fun handleQuestions(questions: List<QuestionEntity>) {
