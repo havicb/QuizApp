@@ -11,7 +11,9 @@ import com.example.quizapp.domain.common.BaseResult
 import com.example.quizapp.presentation.base.view.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,32 +39,25 @@ class LoginViewModel @Inject constructor(
     }
 
     fun loginUser() = viewModelScope.launch {
-        loginUseCase.loginUser(LoginRequest(email.value!!, password.value!!))
-            .onStart {
-                showLoading()
-            }.catch { exception ->
-                hideLoading()
-                showToast(exception.localizedMessage!!)
-            }.collect { result ->
-                hideLoading()
-                when (result) {
-                    is BaseResult.Success -> handleSuccessLogin(result)
-                    is BaseResult.Error -> handleLoginError(result)
-                }
-            }
+        showLoading()
+        when (val call = loginUseCase.loginUser(LoginRequest(email.value!!, password.value!!))) {
+            is BaseResult.Success -> handleSuccessLogin(call.data)
+            is BaseResult.Error -> handleLoginError(call.response)
+        }
+        hideLoading()
     }
 
     private fun showToast(localizedMessage: String) {
         _loginFragmentState.value = LoginFragmentState.ShowToast(localizedMessage)
     }
 
-    private fun handleLoginError(errorResponse: BaseResult.Error<ErrorResponse>) {
-        _loginFragmentState.value = LoginFragmentState.LoginFailed(errorResponse.response.message)
+    private fun handleLoginError(errorResponse: ErrorResponse) {
+        _loginFragmentState.value = LoginFragmentState.LoginFailed(errorResponse.message)
     }
 
-    private suspend fun handleSuccessLogin(successResponse: BaseResult.Success<LoginEntity>) {
+    private suspend fun handleSuccessLogin(successResponse: LoginEntity) {
         _loginFragmentState.value = LoginFragmentState.LoginSuccessful
-        prefsStore.saveAuthToken(successResponse.data.authToken!!)
+        prefsStore.saveAuthToken(successResponse.authToken!!)
     }
 
     private fun showLoading() {
@@ -78,6 +73,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private suspend fun getToken() {
+        prefsStore.clear()
         prefsStore.getAuthToken().collect {
             if (it != "") {
                 delay(1000)

@@ -17,8 +17,6 @@ import com.example.quizapp.presentation.main.quiz.question.Selectable
 import com.example.quizapp.presentation.main.quiz.question.toView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -52,17 +50,14 @@ class QuizViewModel @Inject constructor(
     }
 
     private fun fetch(quizSettings: QuizSettings) = viewModelScope.launch {
-        questionsUseCase.fetchQuestionData(
+        val call = questionsUseCase.fetchQuestionData(
             quizSettings.numberOfQuestions,
             quizSettings.category.apiValue,
             quizSettings.difficulty.lowercase()
-        ).catch { ex ->
-            showToast(ex.localizedMessage)
-        }.collect { result ->
-            when (result) {
-                is BaseResult.Success -> handleQuestions(result.data)
-                is BaseResult.Error -> handleError(result.response)
-            }
+        )
+        when (call) {
+            is BaseResult.Success -> handleQuestions(call.data)
+            is BaseResult.Error -> handleError(call.response)
         }
     }
 

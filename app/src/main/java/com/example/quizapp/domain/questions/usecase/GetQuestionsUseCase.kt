@@ -4,7 +4,7 @@ import com.example.quizapp.data.ErrorResponse
 import com.example.quizapp.data.questions.repository.QuestionRepository
 import com.example.quizapp.domain.common.BaseResult
 import com.example.quizapp.domain.questions.entity.QuestionEntity
-import kotlinx.coroutines.flow.Flow
+import com.example.quizapp.domain.questions.entity.toDomain
 import javax.inject.Inject
 
 class GetQuestionsUseCase @Inject constructor(
@@ -15,7 +15,15 @@ class GetQuestionsUseCase @Inject constructor(
         amount: Int,
         category: Int,
         difficulty: String
-    ): Flow<BaseResult<List<QuestionEntity>, ErrorResponse>> {
-        return questionRepository.fetchQuestions(amount, category, difficulty, "multiple")
+    ): BaseResult<List<QuestionEntity>, ErrorResponse> {
+        return when (
+            val call =
+                questionRepository.fetchQuestions(amount, category, difficulty, "multiple")
+        ) {
+            is BaseResult.Success -> BaseResult.Success(call.data.questions.map { it.toDomain() })
+            is BaseResult.Error -> BaseResult.Error(call.response)
+        }
     }
 }
+
+//         
