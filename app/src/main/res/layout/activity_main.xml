@@ -22,7 +22,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimaryVariant"
             android:elevation="@dimen/small_50"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:navigationIcon="@drawable/ic_home"
+            android:theme="@style/CustomizedToolbar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         <androidx.fragment.app.FragmentContainerView

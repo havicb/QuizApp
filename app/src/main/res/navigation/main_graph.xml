@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="com.example.quizapp.presentation.main.registration.RegistrationFragment"
+        android:name="com.example.quizapp.presentation.main.register.RegistrationFragment"
         android:label="fragment_registration"
         tools:layout="@layout/fragment_registration" />
 

@@ -17,12 +17,20 @@ class MainActivity : BaseBoundActivity<MainViewModel, ActivityMainBinding>() {
     override val viewModelNameId = BR.viewModel
     override val viewModel: MainViewModel by viewModels()
 
-    private val navController by lazy { findNavController(R.id.main_graph) }
+    private val navController by lazy { findNavController(R.id.main_navigation_host) }
 
     override fun onSupportNavigateUp() = navController.navigateUp()
     override fun preInflate() {}
-    override fun postInflate(viewDataBinding: ViewDataBinding?) {}
+    override fun postInflate(viewDataBinding: ViewDataBinding?) { initUI() }
+
     override fun bindToViewModel() {}
+
+    override fun initUI() = with(binding) {
+        setSupportActionBar(mainToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        super.initUI()
+    }
 }
 
 class MainViewModel() : BaseViewModel()

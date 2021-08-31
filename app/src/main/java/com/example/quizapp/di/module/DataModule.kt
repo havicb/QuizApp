@@ -4,6 +4,9 @@ import android.content.Context
 import com.example.quizapp.data.auth.login.api.LoginAPI
 import com.example.quizapp.data.auth.login.repository.LoginRepository
 import com.example.quizapp.data.auth.login.repository.LoginRepositoryImpl
+import com.example.quizapp.data.auth.register.api.RegistrationAPI
+import com.example.quizapp.data.auth.register.repository.RegistrationRepository
+import com.example.quizapp.data.auth.register.repository.RegistrationRepositoryImpl
 import com.example.quizapp.data.prefstore.PrefsStore
 import com.example.quizapp.data.prefstore.PrefsStoreImpl
 import com.example.quizapp.data.questions.api.QuestionsAPI
@@ -41,8 +44,16 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideQuestionApi(@QuestionRetrofit retrofit: Retrofit) =
-        retrofit.create(QuestionsAPI::class.java)
+    fun provideRegistrationRepository(registrationAPI: RegistrationAPI): RegistrationRepository =
+        RegistrationRepositoryImpl(registrationAPI)
+
+    @Provides
+    @Singleton
+    fun provideRegistrationApi(@AuthRetrofit retrofit: Retrofit) = retrofit.create(RegistrationAPI::class.java)
+
+    @Provides
+    @Singleton
+    fun provideQuestionApi(@QuestionRetrofit retrofit: Retrofit) = retrofit.create(QuestionsAPI::class.java)
 
     @Provides
     @Singleton

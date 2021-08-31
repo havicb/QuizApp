@@ -22,4 +22,8 @@
     <string name="login_title">Quiz Login</string>
     <string name="go_to_register_btn_text">Don\'t have account?</string>
     <string name="register_for_the_app">registration_title</string>
+    <string name="fullName">Enter your name..</string>
+    <string name="email">Enter your email..</string>
+    <string name="register_title">Register</string>
+    <string name="register">Register</string>
 </resources>
