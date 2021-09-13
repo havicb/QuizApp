@@ -1,8 +1,8 @@
 package com.example.quizapp.data.questions.repository
 
-import com.example.quizapp.data.ErrorResponse
+import com.example.quizapp.core.Either
+import com.example.quizapp.core.Failure
 import com.example.quizapp.data.questions.dto.QuestionResponse
-import com.example.quizapp.domain.common.BaseResult
 
 interface QuestionRepository {
     suspend fun fetchQuestions(
@@ -10,5 +10,5 @@ interface QuestionRepository {
         category: Int,
         difficulty: String,
         type: String
-    ): BaseResult<QuestionResponse, ErrorResponse>
+    ): Either<Failure, QuestionResponse>
 }

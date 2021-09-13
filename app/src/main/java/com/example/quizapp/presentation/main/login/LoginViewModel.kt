@@ -2,12 +2,13 @@ package com.example.quizapp.presentation.main.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.quizapp.data.ErrorResponse
+import com.example.quizapp.core.Either
+import com.example.quizapp.core.Failure
 import com.example.quizapp.data.auth.login.dto.LoginRequest
 import com.example.quizapp.data.prefstore.PrefsStore
 import com.example.quizapp.domain.auth.login.entity.LoginEntity
 import com.example.quizapp.domain.auth.login.usecase.LoginUseCase
-import com.example.quizapp.domain.common.BaseResult
+import com.example.quizapp.domain.auth.login.usecase.Params
 import com.example.quizapp.presentation.base.view.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -40,10 +41,10 @@ class LoginViewModel @Inject constructor(
 
     fun loginUser() = viewModelScope.launch {
         showLoading()
-        when (val call = loginUseCase.loginUser(LoginRequest(email.value!!, password.value!!))) {
-            is BaseResult.Success -> handleSuccessLogin(call.data)
-            is BaseResult.Error -> handleLoginError(call.response)
-        }
+        loginUseCase(Params(LoginRequest(email.value!!, password.value!!))).fold(
+            ::handleLoginError,
+            ::handleSuccessLogin
+        )
         hideLoading()
     }
 
@@ -51,13 +52,13 @@ class LoginViewModel @Inject constructor(
         _loginFragmentState.value = LoginFragmentState.ShowToast(localizedMessage)
     }
 
-    private fun handleLoginError(errorResponse: ErrorResponse) {
-        _loginFragmentState.value = LoginFragmentState.LoginFailed(errorResponse.message)
+    private fun handleLoginError(failure: Failure) {
+        _loginFragmentState.value = LoginFragmentState.LoginFailed("Dummy message")
     }
 
-    private suspend fun handleSuccessLogin(successResponse: LoginEntity) {
+    private fun handleSuccessLogin(loginEntity: LoginEntity) = viewModelScope.launch {
         _loginFragmentState.value = LoginFragmentState.LoginSuccessful
-        prefsStore.saveAuthToken(successResponse.authToken!!)
+        prefsStore.saveAuthToken(loginEntity.authToken!!)
     }
 
     private fun showLoading() {

@@ -1,19 +1,21 @@
 package com.example.quizapp.data.base
 
 import android.util.Log
-import com.example.quizapp.data.ErrorResponse
-import com.example.quizapp.domain.common.BaseResult
+import com.example.quizapp.core.Either
+import com.example.quizapp.core.Failure
 import retrofit2.Response
 
 abstract class BaseRepository {
 
-    internal suspend inline fun <reified T> Response<T>.getResults(): BaseResult<T, ErrorResponse> {
-        return when (isSuccessful) {
-            true -> BaseResult.Success(body() ?: T::class.java.newInstance())
-            false -> {
-                Log.d("CALLING", "CALLED ${raw()}")
-                BaseResult.Error(ErrorResponse(code(), message()))
+    internal suspend inline fun <reified T> Response<T>.getResults(): Either<Failure, T> {
+        return try {
+            when (isSuccessful) {
+                true -> Either.Right(body() ?: T::class.java.newInstance())
+                false -> { Either.Left(Failure.ServerFailure) }
             }
+        } catch(ex: Exception) {
+            Log.d("CALLING", "${ex.localizedMessage}")
+            return Either.Left(Failure.ServerFailure)
         }
     }
 }

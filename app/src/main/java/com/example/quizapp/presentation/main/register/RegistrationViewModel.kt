@@ -3,9 +3,12 @@ package com.example.quizapp.presentation.main.register
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.quizapp.core.Either
+import com.example.quizapp.core.Failure
 import com.example.quizapp.data.auth.register.dto.RegisterRequest
+import com.example.quizapp.domain.auth.register.entity.RegisterEntity
+import com.example.quizapp.domain.auth.register.usecase.Params
 import com.example.quizapp.domain.auth.register.usecase.RegisterUserUseCase
-import com.example.quizapp.domain.common.BaseResult
 import com.example.quizapp.presentation.base.view.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -29,8 +32,8 @@ class RegistrationViewModel @Inject constructor(
     fun register() = viewModelScope.launch {
         if (validateFields()) {
             showLoading()
-            when (
-                val call = registerUserUseCase.register(
+            registerUserUseCase(
+                Params(
                     RegisterRequest(
                         name.value!!,
                         email.value!!,
@@ -38,14 +41,19 @@ class RegistrationViewModel @Inject constructor(
                         password.value!!
                     )
                 )
-            ) {
-                is BaseResult.Success -> showToast(call.data.message)
-                is BaseResult.Error -> showToast(call.response.message)
-            }
+            ).fold(::handleFailure, ::handleSuccessRegistration)
             hideLoading()
         } else {
             _registrationFragmentState.value = RegistrationFragmentState.EmptyRegisterField
         }
+    }
+
+    private fun handleFailure(failure: Failure) {
+
+    }
+
+    private fun handleSuccessRegistration(registerEntity: RegisterEntity) {
+
     }
 
     private fun validateFields(): Boolean {

@@ -7,10 +7,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.quizapp.R
-import com.example.quizapp.data.ErrorResponse
-import com.example.quizapp.domain.common.BaseResult
+import com.example.quizapp.core.Either
+import com.example.quizapp.core.Failure
 import com.example.quizapp.domain.questions.entity.QuestionEntity
 import com.example.quizapp.domain.questions.usecase.GetQuestionsUseCase
+import com.example.quizapp.domain.questions.usecase.Params
 import com.example.quizapp.presentation.base.view.BaseViewModel
 import com.example.quizapp.presentation.main.home.QuizSettings
 import com.example.quizapp.presentation.main.quiz.question.Selectable
@@ -50,24 +51,21 @@ class QuizViewModel @Inject constructor(
     }
 
     private fun fetch(quizSettings: QuizSettings) = viewModelScope.launch {
-        when (
-            val call = questionsUseCase.fetchQuestionData(
+        questionsUseCase(
+            Params(
                 quizSettings.numberOfQuestions,
                 quizSettings.category.apiValue,
                 quizSettings.difficulty.lowercase()
             )
-        ) {
-            is BaseResult.Success -> handleQuestions(call.data)
-            is BaseResult.Error -> handleError(call.response)
-        }
+        ).fold(::handleFailure, ::handleQuestions)
     }
 
     private fun showToast(localizedMessage: String) {
         _quizFragmentState.value = QuizFragmentState.ShowToast(localizedMessage)
     }
 
-    private fun handleError(response: ErrorResponse) {
-        showToast(response.message)
+    private fun handleFailure(failure: Failure) {
+        showToast("Dummy error")
     }
 
     private fun handleQuestions(questions: List<QuestionEntity>) {
