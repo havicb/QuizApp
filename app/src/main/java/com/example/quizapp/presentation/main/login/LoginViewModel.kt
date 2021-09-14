@@ -35,10 +35,6 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch { getToken() }
     }
 
-    fun loginSuccessful() {
-        navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
-    }
-
     fun loginUser() = viewModelScope.launch {
         showLoading()
         loginUseCase(Params(LoginRequest(email.value!!, password.value!!))).fold(
@@ -48,29 +44,30 @@ class LoginViewModel @Inject constructor(
         hideLoading()
     }
 
-    private fun showToast(localizedMessage: String) {
-        _loginFragmentState.value = LoginFragmentState.ShowToast(localizedMessage)
+    fun registerButtonSelected() {
+        navigate(LoginFragmentDirections.actionLoginFragmentToRegistrationFragment())
     }
 
     private fun handleLoginError(failure: Failure) {
-        _loginFragmentState.value = LoginFragmentState.LoginFailed("Dummy message")
+        //todo
+        _loginFragmentState.value = LoginFragmentState.LoginFailed("Bad request")
+    }
+
+    private fun loginSuccessful() {
+        navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
     }
 
     private fun handleSuccessLogin(loginEntity: LoginEntity) = viewModelScope.launch {
-        _loginFragmentState.value = LoginFragmentState.LoginSuccessful
         prefsStore.saveAuthToken(loginEntity.authToken!!)
+        loginSuccessful()
     }
 
     private fun showLoading() {
-        _loginFragmentState.value = LoginFragmentState.Loading(true)
+        _loginFragmentState.value = LoginFragmentState.Loading
     }
 
     private fun hideLoading() {
-        _loginFragmentState.value = LoginFragmentState.Loading(false)
-    }
-
-    fun registerButtonSelected() {
-        navigate(LoginFragmentDirections.actionLoginFragmentToRegistrationFragment())
+        _loginFragmentState.value = LoginFragmentState.NotLoading
     }
 
     private suspend fun getToken() {
@@ -78,7 +75,7 @@ class LoginViewModel @Inject constructor(
         prefsStore.getAuthToken().collect {
             if (it != "") {
                 delay(1000)
-                _loginFragmentState.value = LoginFragmentState.LoginSuccessful
+                loginSuccessful()
             } else {
                 _loginFragmentState.value = LoginFragmentState.ShowLogin
             }
@@ -86,11 +83,13 @@ class LoginViewModel @Inject constructor(
     }
 }
 
+// According to Bob Uncle: "You should never pass the boolean to function"
+// Instead of creating one data class Loading(isLoading: Boolean) and then observing,
+// I have extracted it to two separate objects
 sealed class LoginFragmentState {
     object Init : LoginFragmentState()
     object ShowLogin : LoginFragmentState()
-    object LoginSuccessful : LoginFragmentState()
-    data class Loading(val isLoading: Boolean) : LoginFragmentState()
+    object Loading : LoginFragmentState()
+    object NotLoading : LoginFragmentState()
     data class LoginFailed(val message: String) : LoginFragmentState()
-    data class ShowToast(val message: String) : LoginFragmentState()
 }

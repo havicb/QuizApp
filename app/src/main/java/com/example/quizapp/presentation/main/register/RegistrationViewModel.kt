@@ -49,33 +49,37 @@ class RegistrationViewModel @Inject constructor(
     }
 
     private fun handleFailure(failure: Failure) {
-
+        // todo
     }
 
     private fun handleSuccessRegistration(registerEntity: RegisterEntity) {
-
+        // todo
     }
 
     private fun validateFields(): Boolean {
-        return name.value != "" && email.value != "" && username.value != "" && password.value != ""
+        return validateField(name.value) && validateField(email.value)
+                && validateField(username.value) && validateField(password.value)
+    }
+
+    private fun validateField(value: String?): Boolean {
+        return value!!.isNotEmpty()
     }
 
     private fun showLoading() {
-        _registrationFragmentState.value = RegistrationFragmentState.Loading(true)
+        _registrationFragmentState.value = RegistrationFragmentState.Loading
     }
 
     private fun hideLoading() {
-        _registrationFragmentState.value = RegistrationFragmentState.Loading(false)
-    }
-
-    private fun showToast(message: String) {
-        _registrationFragmentState.value = RegistrationFragmentState.ShowToast(message)
+        _registrationFragmentState.value = RegistrationFragmentState.NotLoading
     }
 }
 
+// According to Bob Uncle: "You should never pass the boolean to function"
+// Instead of creating one data class Loading(isLoading: Boolean) and then observing,
+// I have extracted it to two separate objects
 sealed class RegistrationFragmentState {
     object Init : RegistrationFragmentState()
     object EmptyRegisterField : RegistrationFragmentState()
-    data class Loading(val isLoading: Boolean) : RegistrationFragmentState()
-    data class ShowToast(val message: String) : RegistrationFragmentState()
+    object Loading : RegistrationFragmentState()
+    object NotLoading : RegistrationFragmentState()
 }

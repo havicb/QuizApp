@@ -50,6 +50,34 @@ class QuizViewModel @Inject constructor(
         fetch(quizSettings!!)
     }
 
+    fun checkQuestion(userAnswer: String) = viewModelScope.launch {
+        if (userAnswer == currentQuestion?.correctAnswer) {
+            delay(1000)
+            changeState(QuizFragmentState.CorrectAnswer())
+            delay(1000)
+            points += 2
+            nextQuestion()
+        } else {
+            delay(1000)
+            changeState(QuizFragmentState.InCorrectAnswer())
+            delay(2000)
+            changeState(QuizFragmentState.FinishedQuiz(points))
+        }
+    }
+
+    fun selectedAnswer(view: View) {
+        changeState(QuizFragmentState.AnswerUnSelected)
+        changeState(QuizFragmentState.AnswerSelected(SelectedAnswerModelUI(view as TextView)))
+    }
+
+    fun onLastQuestion() {
+        _quizFragmentState.value = QuizFragmentState.LastQuestion
+    }
+
+    fun onQuizFinished() {
+        navigate(QuizFragmentDirections.actionQuizFragmentToHomeFragment())
+    }
+
     private fun fetch(quizSettings: QuizSettings) = viewModelScope.launch {
         questionsUseCase(
             Params(
@@ -75,29 +103,6 @@ class QuizViewModel @Inject constructor(
         handleNewQuestion(questionsData.pop())
     }
 
-    fun checkQuestion(userAnswer: String) = viewModelScope.launch {
-        if (userAnswer == currentQuestion?.correctAnswer) {
-            delay(1000)
-            changeState(QuizFragmentState.CorrectAnswer())
-            delay(1000)
-            points += 2
-            nextQuestion()
-        } else {
-            delay(1000)
-            changeState(QuizFragmentState.InCorrectAnswer())
-            delay(2000)
-            changeState(QuizFragmentState.FinishedQuiz(points))
-        }
-    }
-
-    fun selectedAnswer(view: View) {
-        changeState(QuizFragmentState.AnswerUnSelected)
-        changeState(QuizFragmentState.AnswerSelected(SelectedAnswerModelUI(view as TextView)))
-    }
-
-    fun onLastQuestion() {
-    }
-
     private fun nextQuestion() {
         changeState(QuizFragmentState.AnswerUnSelected)
         handleNewQuestion(questionsData.pop())
@@ -121,10 +126,6 @@ class QuizViewModel @Inject constructor(
         answerB.value = questionView.answerB
         answerC.value = questionView.answerC
         answerD.value = questionView.answerD
-    }
-
-    fun onQuizFinished() {
-        navigate(QuizFragmentDirections.actionQuizFragmentToHomeFragment())
     }
 }
 

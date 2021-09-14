@@ -29,17 +29,14 @@ class LoginFragment : BaseBoundFragment<FragmentLoginBinding, LoginViewModel>() 
     private fun handleFragmentState(loginFragmentState: LoginFragmentState) {
         when (loginFragmentState) {
             is LoginFragmentState.Init -> Unit
-            is LoginFragmentState.LoginSuccessful -> {
-                viewModel.loginSuccessful()
-            }
             is LoginFragmentState.LoginFailed -> {
                 showToast(loginFragmentState.message)
             }
             is LoginFragmentState.Loading -> {
-                handleLoading(loginFragmentState.isLoading)
+                onLoading()
             }
-            is LoginFragmentState.ShowToast -> {
-                showToast(loginFragmentState.message)
+            is LoginFragmentState.NotLoading -> {
+                onLoadingStopped()
             }
             is LoginFragmentState.ShowLogin -> showLogin()
         }
@@ -50,16 +47,6 @@ class LoginFragment : BaseBoundFragment<FragmentLoginBinding, LoginViewModel>() 
         loginViews.visible()
     }
 
-    private fun handleLoading(isLoading: Boolean) = with(binding) {
-        if (isLoading)
-            loginProgress.visible()
-        else
-            loginProgress.hide()
-    }
-
-    override fun initUI() = with(binding) {
-        goToRegister.setOnClickListener {
-            viewModel?.registerButtonSelected()
-        }
-    }
+    private fun onLoading() = binding.loginProgress.visible()
+    private fun onLoadingStopped() = binding.loginProgress.hide()
 }

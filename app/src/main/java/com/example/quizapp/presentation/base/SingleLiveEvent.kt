@@ -27,8 +27,4 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
         mPending.set(true)
         super.setValue(t)
     }
-
-    companion object {
-        private const val TAG = "SingleLiveEvent"
-    }
 }

@@ -28,17 +28,17 @@ class RegistrationFragment :
         when (state) {
             is RegistrationFragmentState.Init -> Unit
             is RegistrationFragmentState.Loading -> {
-                handleLoading(state.isLoading)
+                onLoading()
             }
-            is RegistrationFragmentState.ShowToast -> showToast(state.message)
-            is RegistrationFragmentState.EmptyRegisterField -> { showSnackbar("No empty fields are allowed!") }
+            is RegistrationFragmentState.NotLoading -> {
+                onStoppedLoading()
+            }
+            is RegistrationFragmentState.EmptyRegisterField -> {
+                showSnackbar("No empty fields are allowed!")
+            }
         }
     }
 
-    private fun handleLoading(isLoading: Boolean) = with(binding) {
-        if (isLoading)
-            registrationProgress.visible()
-        else
-            registrationProgress.hide()
-    }
+    private fun onLoading() = binding.registrationProgress.visible()
+    private fun onStoppedLoading() = binding.registrationProgress.hide()
 }

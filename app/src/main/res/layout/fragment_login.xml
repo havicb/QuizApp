@@ -6,7 +6,6 @@
     tools:layout="@layout/fragment_login">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.example.quizapp.presentation.main.login.LoginViewModel" />
@@ -89,7 +88,8 @@
                     android:id="@+id/user_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={viewModel.password}" />
+                    android:text="@={viewModel.password}"
+                    android:inputType="textPassword"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,6 +114,7 @@
                 android:layout_marginTop="@dimen/normal_150"
                 android:padding="@dimen/normal_100"
                 android:text="@string/go_to_register_btn_text"
+                android:onClick="@{() -> viewModel.registerButtonSelected()}"
                 android:textColor="@color/white" />
 
         </RelativeLayout>
