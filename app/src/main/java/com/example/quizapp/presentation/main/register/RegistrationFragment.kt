@@ -27,15 +27,9 @@ class RegistrationFragment :
     private fun handleFragmentState(state: RegistrationFragmentState) {
         when (state) {
             is RegistrationFragmentState.Init -> Unit
-            is RegistrationFragmentState.Loading -> {
-                onLoading()
-            }
-            is RegistrationFragmentState.NotLoading -> {
-                onStoppedLoading()
-            }
-            is RegistrationFragmentState.EmptyRegisterField -> {
-                showSnackbar("No empty fields are allowed!")
-            }
+            is RegistrationFragmentState.Loading -> onLoading()
+            is RegistrationFragmentState.NotLoading -> onStoppedLoading()
+            is RegistrationFragmentState.EmptyRegisterField -> showSnackbar(getString(R.string.empty_fields_error))
         }
     }
 

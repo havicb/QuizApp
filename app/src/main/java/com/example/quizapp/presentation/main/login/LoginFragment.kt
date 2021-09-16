@@ -4,6 +4,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.quizapp.BR
 import com.example.quizapp.R
+import com.example.quizapp.core.Failure
 import com.example.quizapp.core.extensions.hide
 import com.example.quizapp.core.extensions.showToast
 import com.example.quizapp.core.extensions.visible
@@ -24,20 +25,24 @@ class LoginFragment : BaseBoundFragment<FragmentLoginBinding, LoginViewModel>() 
                 handleFragmentState(it)
             }
         }
+        viewModel.error.observe(viewLifecycleOwner) {
+            handleFailure(it)
+        }
+    }
+
+    private fun handleFailure(failure: Failure) {
+        when (failure) {
+            is Failure.NetworkFailure -> handleCommonNetworkErrors(failure)
+            else -> showToast(getString(R.string.other_error))
+        }
     }
 
     private fun handleFragmentState(loginFragmentState: LoginFragmentState) {
         when (loginFragmentState) {
             is LoginFragmentState.Init -> Unit
-            is LoginFragmentState.LoginFailed -> {
-                showToast(loginFragmentState.message)
-            }
-            is LoginFragmentState.Loading -> {
-                onLoading()
-            }
-            is LoginFragmentState.NotLoading -> {
-                onLoadingStopped()
-            }
+            is LoginFragmentState.LoginFailed -> showToast(loginFragmentState.message)
+            is LoginFragmentState.Loading -> onLoading()
+            is LoginFragmentState.NotLoading -> onLoadingStopped()
             is LoginFragmentState.ShowLogin -> showLogin()
         }
     }

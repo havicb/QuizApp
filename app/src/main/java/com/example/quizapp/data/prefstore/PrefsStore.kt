@@ -7,3 +7,4 @@ interface PrefsStore {
     suspend fun getAuthToken(): Flow<String>
     suspend fun clear()
 }
+

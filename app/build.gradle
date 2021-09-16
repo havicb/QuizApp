@@ -5,6 +5,7 @@ plugins {
     id "dagger.hilt.android.plugin"
     id "androidx.navigation.safeargs.kotlin"
 }
+apply plugin: 'kotlin-android'
 
 android {
     compileSdk 31
@@ -19,6 +20,8 @@ android {
 
         buildConfigField 'String', 'API_BASE_URL', '"https://opentdb.com/"'
         buildConfigField 'String', 'API_AUTH_URL', '"https://thesocialnetworkapp.azurewebsites.net/api/auth/"'
+        buildConfigField 'String', 'PREFERENCE_STORAGE_KEY', '"PREFERENCES_STORAGE"'
+        buildConfigField 'String', 'USER_TOKEN_KEY', '"USER_AUTH_TOKEN"'
     }
 
     dataBinding {
@@ -88,4 +91,7 @@ dependencies {
     testImplementation "junit:junit:$jUnitVersion"
     androidTestImplementation "androidx.test.ext:junit:"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
+    implementation "androidx.core:core-ktx:+"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

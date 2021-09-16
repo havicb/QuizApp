@@ -1,13 +1,17 @@
 package com.example.quizapp.di.module
 
+import android.content.Context
 import com.example.quizapp.data.DefaultNetworkConfig
 import com.example.quizapp.data.NetworkConfig
+import com.example.quizapp.data.NetworkHandler
+import com.example.quizapp.data.NetworkHandlerImpl
 import com.example.quizapp.di.qualifiers.AuthRetrofit
 import com.example.quizapp.di.qualifiers.QuestionRetrofit
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -19,6 +23,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
+
+    @Singleton
+    @Provides
+    fun provideNetworkHandler(@ApplicationContext context: Context): NetworkHandler = NetworkHandlerImpl(context)
 
     @Singleton
     @Provides

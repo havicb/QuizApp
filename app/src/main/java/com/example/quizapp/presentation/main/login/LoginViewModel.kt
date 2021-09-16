@@ -1,5 +1,6 @@
 package com.example.quizapp.presentation.main.login
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.quizapp.core.Either
@@ -49,8 +50,10 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun handleLoginError(failure: Failure) {
-        //todo
-        _loginFragmentState.value = LoginFragmentState.LoginFailed("Bad request")
+        when(failure) {
+            is Failure.NetworkFailure -> handleCommonNetworkErrors(failure)
+            else -> error.value = Failure.OtherFailure("Dummy error..")
+        }
     }
 
     private fun loginSuccessful() {

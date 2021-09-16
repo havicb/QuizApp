@@ -1,5 +1,6 @@
 package com.example.quizapp.presentation.main
 
+import android.view.Menu
 import androidx.activity.viewModels
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.findNavController
@@ -21,7 +22,9 @@ class MainActivity : BaseBoundActivity<MainViewModel, ActivityMainBinding>() {
 
     override fun onSupportNavigateUp() = navController.navigateUp()
     override fun preInflate() {}
-    override fun postInflate(viewDataBinding: ViewDataBinding?) { initUI() }
+    override fun postInflate(viewDataBinding: ViewDataBinding?) {
+        initUI()
+    }
 
     override fun bindToViewModel() {}
 

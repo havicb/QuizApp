@@ -26,4 +26,16 @@
     <string name="email">Enter your email..</string>
     <string name="register_title">Register</string>
     <string name="register">Register</string>
+
+    <string name="server_error">Server error! Try again in few minutes.</string>
+    <string name="bad_request_error">Bad request!</string>
+    <string name="forbidden_access_error">You are not allowed for that!</string>
+    <string name="unauthorized_error">Unauthorized!</string>
+    <string name="not_found_error">Not found!</string>
+    <string name="other_error">Dummy error!</string>
+    <string name="empty_fields_error">No empty field are allowed!</string>
+
+    <string name="preference_key">PREFERENCES_STORAGE</string>
+    <string name="auth_key">USER_AUTH_TOKEN</string>
+    <string name="log_out">Log out</string>
 </resources>

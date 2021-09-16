@@ -1,6 +1,9 @@
 package com.example.quizapp.di.module
 
 import android.content.Context
+import com.example.quizapp.data.NetworkHandler
+import com.example.quizapp.data.StorageConfig
+import com.example.quizapp.data.StorageConfigImpl
 import com.example.quizapp.data.auth.login.api.LoginAPI
 import com.example.quizapp.data.auth.login.repository.LoginRepository
 import com.example.quizapp.data.auth.login.repository.LoginRepositoryImpl
@@ -27,6 +30,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module(includes = [NetworkModule::class])
 class DataModule {
+
     @Provides
     @Singleton
     fun provideQuizLocalRepository(@ApplicationContext context: Context): QuizRepository =
@@ -34,32 +38,48 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideQuestionRepository(questionsApi: QuestionsAPI): QuestionRepository =
-        QuestionRepositoryImpl(questionsApi)
+    fun provideQuestionRepository(
+        networkHandler: NetworkHandler,
+        questionsApi: QuestionsAPI
+    ): QuestionRepository =
+        QuestionRepositoryImpl(networkHandler, questionsApi)
 
     @Provides
     @Singleton
-    fun provideLoginRepository(loginAPI: LoginAPI): LoginRepository =
-        LoginRepositoryImpl(loginAPI)
+    fun provideLoginRepository(
+        networkHandler: NetworkHandler,
+        loginAPI: LoginAPI
+    ): LoginRepository =
+        LoginRepositoryImpl(networkHandler, loginAPI)
 
     @Provides
     @Singleton
-    fun provideRegistrationRepository(registrationAPI: RegistrationAPI): RegistrationRepository =
-        RegistrationRepositoryImpl(registrationAPI)
+    fun provideRegistrationRepository(
+        networkHandler: NetworkHandler,
+        registrationAPI: RegistrationAPI
+    ): RegistrationRepository =
+        RegistrationRepositoryImpl(networkHandler, registrationAPI)
 
     @Provides
     @Singleton
-    fun provideRegistrationApi(@AuthRetrofit retrofit: Retrofit) = retrofit.create(RegistrationAPI::class.java)
+    fun provideRegistrationApi(@AuthRetrofit retrofit: Retrofit): RegistrationAPI =
+        retrofit.create(RegistrationAPI::class.java)
 
     @Provides
     @Singleton
-    fun provideQuestionApi(@QuestionRetrofit retrofit: Retrofit) = retrofit.create(QuestionsAPI::class.java)
+    fun provideQuestionApi(@QuestionRetrofit retrofit: Retrofit): QuestionsAPI =
+        retrofit.create(QuestionsAPI::class.java)
 
     @Provides
     @Singleton
-    fun provideLoginApi(@AuthRetrofit retrofit: Retrofit) = retrofit.create(LoginAPI::class.java)
+    fun provideLoginApi(@AuthRetrofit retrofit: Retrofit): LoginAPI =
+        retrofit.create(LoginAPI::class.java)
 
     @Provides
     @Singleton
-    fun providePrefStore(@ApplicationContext context: Context): PrefsStore = PrefsStoreImpl(context)
+    fun providePrefStore(@ApplicationContext context: Context, storageConfig: StorageConfig): PrefsStore = PrefsStoreImpl(context, storageConfig)
+
+    @Provides
+    @Singleton
+    fun provideStorageConfig(@ApplicationContext context: Context): StorageConfig = StorageConfigImpl(context)
 }
