@@ -1,6 +1,7 @@
 package com.example.quizapp.presentation.base.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,17 +37,6 @@ abstract class BaseFragment<ViewBindingType : ViewDataBinding> : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         postInflate(binding)
-    }
-
-    protected fun handleCommonNetworkErrors(failure: Failure.NetworkFailure) {
-        when (failure) {
-            is Failure.ServerFailure -> showToast(getString(R.string.server_error))
-            is Failure.NetworkConnectionFailure -> showToast(failure.message)
-            is Failure.BadRequest -> showSnackbar(failure.message)
-            is Failure.Forbidden -> showToast(getString(R.string.forbidden_access_error))
-            is Failure.NotAuthorized -> showToast(getString(R.string.unauthorized_error))
-            is Failure.NotFound -> showToast(getString(R.string.not_found_error))
-        }
     }
 
     // this method will be called before inflating the view

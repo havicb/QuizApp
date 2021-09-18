@@ -1,5 +1,6 @@
 package com.example.quizapp.presentation.base.view
 
+import android.widget.Toast
 import androidx.databinding.ViewDataBinding
 
 abstract class BaseBoundActivity<ViewModelType : BaseViewModel, ViewDataBindingType : ViewDataBinding> :

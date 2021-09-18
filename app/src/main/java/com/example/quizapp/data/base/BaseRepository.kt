@@ -7,18 +7,13 @@ import com.example.quizapp.data.NetworkHandler
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
-import retrofit2.HttpException
 import retrofit2.Response
-import retrofit2.http.HTTP
 import java.net.HttpURLConnection
 import java.net.SocketTimeoutException
 
 abstract class BaseRepository(private val networkHandler: NetworkHandler) {
 
     internal inline fun <reified T> Response<T>.getResults(): Either<Failure, T> {
-        if (!networkHandler.isNetworkAvailable()) {
-            return Either.Left(Failure.NetworkConnectionFailure("No internet available!"))
-        }
         return try {
             when (isSuccessful) {
                 true -> Either.Right(body() ?: T::class.java.newInstance())

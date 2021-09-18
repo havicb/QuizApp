@@ -16,15 +16,15 @@
         android:background="@color/purple"
         tools:context=".presentation.main.MainActivity">
 
-        <androidx.appcompat.widget.Toolbar
+        <include
             android:id="@+id/main_toolbar"
+            layout="@layout/toolbar"/>
+
+        <ViewFlipper
+            android:id="@+id/view_flipper"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimaryVariant"
-            android:elevation="@dimen/small_50"
-            app:navigationIcon="@drawable/ic_home"
-            android:theme="@style/CustomizedToolbar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/main_navigation_host"
@@ -33,6 +33,12 @@
             android:layout_height="match_parent"
             app:defaultNavHost="true"
             app:navGraph="@navigation/main_graph" />
+
+            <include
+                android:id="@+id/no_internet_connection_screen"
+                layout="@layout/no_internet_connection_screen"/>
+
+        </ViewFlipper>
 
     </LinearLayout>
 </layout>

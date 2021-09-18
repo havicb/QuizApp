@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.quizapp.R
-import com.example.quizapp.core.Either
 import com.example.quizapp.core.Failure
 import com.example.quizapp.domain.questions.entity.QuestionEntity
 import com.example.quizapp.domain.questions.usecase.GetQuestionsUseCase
@@ -47,7 +46,7 @@ class QuizViewModel @Inject constructor(
 
     init {
         quizSettings = state.get<QuizSettings>("quizSettings")
-        fetch(quizSettings!!)
+        fetch()
     }
 
     fun checkQuestion(userAnswer: String) = viewModelScope.launch {
@@ -78,22 +77,21 @@ class QuizViewModel @Inject constructor(
         navigate(QuizFragmentDirections.actionQuizFragmentToHomeFragment())
     }
 
-    private fun fetch(quizSettings: QuizSettings) = viewModelScope.launch {
+    private fun fetch() = viewModelScope.launch {
         questionsUseCase(
             Params(
-                quizSettings.numberOfQuestions,
-                quizSettings.category.apiValue,
-                quizSettings.difficulty.lowercase()
+                quizSettings!!.numberOfQuestions,
+                quizSettings!!.category.apiValue,
+                quizSettings!!.difficulty.lowercase()
             )
         ).fold(::handleFailure, ::handleQuestions)
     }
 
-    private fun showToast(localizedMessage: String) {
-        _quizFragmentState.value = QuizFragmentState.ShowToast(localizedMessage)
-    }
-
     private fun handleFailure(failure: Failure) {
-        showToast("Dummy error")
+        when (failure) {
+            is Failure.NetworkFailure -> { handleCommonNetworkErrors(failure, ::fetch) }
+            else -> error.value = Failure.OtherFailure("Dummy error..")
+        }
     }
 
     private fun handleQuestions(questions: List<QuestionEntity>) {

@@ -22,8 +22,10 @@
         <entry key="app/src/main/res/layout/fragment_quiz.xml" value="0.17395833333333333" />
         <entry key="app/src/main/res/layout/fragment_registration.xml" value="0.1546875" />
         <entry key="app/src/main/res/layout/item_quiz.xml" value="0.17395833333333333" />
+        <entry key="app/src/main/res/layout/no_internet_connection_screen.xml" value="0.12284701114488349" />
         <entry key="app/src/main/res/layout/quiz_settings_dialog.xml" value="0.1703125" />
         <entry key="app/src/main/res/layout/stats_dialog_layout.xml" value="0.24456521739130435" />
+        <entry key="app/src/main/res/layout/toolbar.xml" value="0.1" />
         <entry key="app/src/main/res/layout/toolbar_layout.xml" value="0.17395833333333333" />
         <entry key="app/src/main/res/menu/toolbar_menu.xml" value="0.17395833333333333" />
       </map>

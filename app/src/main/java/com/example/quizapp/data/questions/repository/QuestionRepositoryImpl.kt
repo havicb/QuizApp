@@ -1,5 +1,6 @@
 package com.example.quizapp.data.questions.repository
 
+import android.util.Log
 import com.example.quizapp.core.Either
 import com.example.quizapp.core.Failure
 import com.example.quizapp.data.NetworkHandler
@@ -18,6 +19,7 @@ class QuestionRepositoryImpl @Inject constructor(
         difficulty: String,
         type: String
     ): Either<Failure, QuestionResponse> {
+        Log.d("CALLING", "CALLED FROM REPO!")
         return questionsApi.fetchQuestions(amount, category, difficulty, type).getResults()
     }
 }

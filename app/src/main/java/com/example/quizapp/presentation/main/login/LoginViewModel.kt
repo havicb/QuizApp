@@ -1,15 +1,11 @@
 package com.example.quizapp.presentation.main.login
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.quizapp.core.Either
 import com.example.quizapp.core.Failure
-import com.example.quizapp.data.auth.login.dto.LoginRequest
 import com.example.quizapp.data.prefstore.PrefsStore
 import com.example.quizapp.domain.auth.login.entity.LoginEntity
 import com.example.quizapp.domain.auth.login.usecase.LoginUseCase
-import com.example.quizapp.domain.auth.login.usecase.Params
 import com.example.quizapp.presentation.base.view.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -36,21 +32,27 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch { getToken() }
     }
 
+    // My api is down, I can not send http request anymore
+    // TODO i will change BE
     fun loginUser() = viewModelScope.launch {
         showLoading()
-        loginUseCase(Params(LoginRequest(email.value!!, password.value!!))).fold(
+        delay(2000)
+        /*loginUseCase(Params(LoginRequest(email.value!!, password.value!!))).fold(
             ::handleLoginError,
             ::handleSuccessLogin
-        )
+        )*/
+        handleSuccessLogin(LoginEntity("jwt_token", "Success", true))
         hideLoading()
     }
 
     fun registerButtonSelected() {
-        navigate(LoginFragmentDirections.actionLoginFragmentToRegistrationFragment())
+        _loginFragmentState.value =
+            LoginFragmentState.RegisterSelected("Register fragment is currently unavailable!")
+        //navigate(LoginFragmentDirections.actionLoginFragmentToRegistrationFragment())
     }
 
     private fun handleLoginError(failure: Failure) {
-        when(failure) {
+        when (failure) {
             is Failure.NetworkFailure -> handleCommonNetworkErrors(failure)
             else -> error.value = Failure.OtherFailure("Dummy error..")
         }
@@ -94,5 +96,6 @@ sealed class LoginFragmentState {
     object ShowLogin : LoginFragmentState()
     object Loading : LoginFragmentState()
     object NotLoading : LoginFragmentState()
+    data class RegisterSelected(val message: String) : LoginFragmentState()
     data class LoginFailed(val message: String) : LoginFragmentState()
 }
