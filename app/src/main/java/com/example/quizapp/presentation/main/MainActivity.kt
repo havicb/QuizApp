@@ -1,6 +1,8 @@
 package com.example.quizapp.presentation.main
 
+import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.ViewDataBinding
@@ -31,7 +33,7 @@ class MainActivity : BaseBoundActivity<MainViewModel, ActivityMainBinding>() {
     }
 
     override fun bindToViewModel() {
-        // todo for some reason live data not loading observer here !?
+        // todo for some reason live data not gets update from observer here!?
     }
 
     fun updateScreen(screenState: MainScreenState) = with(binding) {
@@ -40,7 +42,7 @@ class MainActivity : BaseBoundActivity<MainViewModel, ActivityMainBinding>() {
                 viewFlipper.showScreen(noInternetConnectionScreen.root)
                 onButtonClick(noInternetConnectionScreen.retryConnect) {
                     reloadScreen {
-                        screenState.onRetryButtonSelected!!.invoke()
+                        screenState.retryButtonSelected?.invoke()
                     }
                 }
             }

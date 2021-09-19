@@ -1,5 +1,6 @@
 package com.example.quizapp.presentation.base.view
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -31,9 +32,8 @@ open class BaseViewModel : ViewModel() {
         when (failure) {
             is Failure.ServerFailure -> error.value = Failure.ServerFailure
             is Failure.NetworkConnectionFailure -> {
-                error.value = Failure.NetworkConnectionFailure(failure.message)
-                delay(1000)
                 _screenState.value = MainScreenState.NoInternetConnectionScreen(onRetry)
+                error.value = Failure.NetworkConnectionFailure(failure.message)
             }
             is Failure.BadRequest -> error.value = Failure.BadRequest(failure.message)
             is Failure.Forbidden -> error.value = Failure.Forbidden
@@ -44,6 +44,6 @@ open class BaseViewModel : ViewModel() {
 }
 
 sealed class MainScreenState() {
-    data class NoInternetConnectionScreen(val onRetryButtonSelected: (() -> Unit)? = null) : MainScreenState()
+    data class NoInternetConnectionScreen(val retryButtonSelected: (() -> Unit)? = null) : MainScreenState()
 }
 

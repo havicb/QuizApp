@@ -33,7 +33,7 @@ class LoginViewModel @Inject constructor(
     }
 
     // My api is down, I can not send http request anymore
-    // TODO i will change BE
+    // TODO i will update BE
     fun loginUser() = viewModelScope.launch {
         showLoading()
         delay(2000)
