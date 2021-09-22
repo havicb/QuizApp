@@ -29,23 +29,27 @@ class RegistrationViewModel @Inject constructor(
 
     val registrationFragmentState: LiveData<RegistrationFragmentState> get() = _registrationFragmentState
 
-    fun register() = viewModelScope.launch {
+    fun registerSelected() = viewModelScope.launch {
         if (validateFields()) {
-            showLoading()
-            registerUserUseCase(
-                Params(
-                    RegisterRequest(
-                        name.value!!,
-                        email.value!!,
-                        username.value!!,
-                        password.value!!
-                    )
-                )
-            ).fold(::handleFailure, ::handleSuccessRegistration)
-            hideLoading()
-        } else {
-            _registrationFragmentState.value = RegistrationFragmentState.EmptyRegisterField
+            registerUser()
+            return@launch
         }
+        showEmptyFieldError()
+    }
+
+    private suspend fun registerUser() {
+        showLoading()
+        registerUserUseCase(
+            Params(
+                RegisterRequest(
+                    name.value!!,
+                    email.value!!,
+                    username.value!!,
+                    password.value!!
+                )
+            )
+        ).fold(::handleFailure, ::handleSuccessRegistration)
+        hideLoading()
     }
 
     private fun handleFailure(failure: Failure) {
@@ -71,6 +75,10 @@ class RegistrationViewModel @Inject constructor(
 
     private fun hideLoading() {
         _registrationFragmentState.value = RegistrationFragmentState.NotLoading
+    }
+
+    private fun showEmptyFieldError() {
+        _registrationFragmentState.value = RegistrationFragmentState.EmptyRegisterField
     }
 }
 

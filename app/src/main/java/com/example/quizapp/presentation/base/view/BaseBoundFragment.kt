@@ -1,6 +1,5 @@
 package com.example.quizapp.presentation.base.view
 
-import android.util.Log
 import androidx.databinding.ViewDataBinding
 import com.example.quizapp.R
 import com.example.quizapp.core.Failure
@@ -32,12 +31,12 @@ abstract class BaseBoundFragment<ViewBindingType : ViewDataBinding, ViewModelTyp
 
     protected fun handleCommonNetworkErrors(failure: Failure.NetworkFailure) {
         when (failure) {
-            is Failure.ServerFailure -> showToast(getString(R.string.server_error))
+            is Failure.ServerFailure -> showToast(failure.message)
             is Failure.NetworkConnectionFailure -> showToast(failure.message)
             is Failure.BadRequest -> showSnackbar(failure.message)
-            is Failure.Forbidden -> showToast(getString(R.string.forbidden_access_error))
-            is Failure.NotAuthorized -> showToast(getString(R.string.unauthorized_error))
-            is Failure.NotFound -> showToast(getString(R.string.not_found_error))
+            is Failure.Forbidden -> showToast(failure.message)
+            is Failure.NotAuthorized -> showToast(failure.message)
+            is Failure.NotFound -> showToast(failure.message)
         }
     }
 
@@ -54,6 +53,7 @@ abstract class BaseBoundFragment<ViewBindingType : ViewDataBinding, ViewModelTyp
                 else -> Unit
             }
         }
+        // for some reason i am not able to observe this screenState inside MainActivity
         viewModel.screenState.observe(this) {
             (activity as MainActivity).updateScreen(it)
         }

@@ -34,10 +34,12 @@
     <string name="not_found_error">Not found!</string>
     <string name="other_error">Dummy error!</string>
     <string name="empty_fields_error">No empty field are allowed!</string>
+    <string name="register_fragment_unavailable_error">Register fragment is currently unavailable!</string>
     <string name="no_internet_connection_error">No internet connection! Try again.</string>
 
     <string name="preference_key">PREFERENCES_STORAGE</string>
     <string name="auth_key">USER_AUTH_TOKEN</string>
     <string name="log_out">Log out</string>
     <string name="retry">Retry</string>
+    <string name="login_as_guest">Login as guest</string>
 </resources>

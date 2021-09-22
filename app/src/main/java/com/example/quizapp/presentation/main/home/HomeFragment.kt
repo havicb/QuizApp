@@ -7,6 +7,7 @@ import com.example.quizapp.R
 import com.example.quizapp.databinding.FragmentHomeBinding
 import com.example.quizapp.presentation.base.view.BaseBoundFragment
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : BaseBoundFragment<FragmentHomeBinding, HomeViewModel>() {
@@ -15,9 +16,8 @@ class HomeFragment : BaseBoundFragment<FragmentHomeBinding, HomeViewModel>() {
     override val viewModelNameId: Int = BR.viewModel
     override val viewModel: HomeViewModel by viewModels()
 
-    private val quizAdapter: QuizHomeAdapter by lazy {
-        QuizHomeAdapter(viewModel::quizSelected)
-    }
+    @Inject
+    lateinit var quizAdapter: QuizHomeAdapter
 
     override fun initUI() {
         initRecycler()
@@ -25,7 +25,7 @@ class HomeFragment : BaseBoundFragment<FragmentHomeBinding, HomeViewModel>() {
 
     override fun bindToViewModel() {
         viewModel.quiz.observe(viewLifecycleOwner) {
-            quizAdapter.quizList = it
+            quizAdapter.updateQuizzes(it)
         }
         viewModel.homeFragmentState.observe(viewLifecycleOwner) {
             handleFragmentState(it)
@@ -46,5 +46,6 @@ class HomeFragment : BaseBoundFragment<FragmentHomeBinding, HomeViewModel>() {
             adapter = quizAdapter
             layoutManager = GridLayoutManager(requireContext(), 2)
         }
+        quizAdapter.quizSelected = viewModel!!::quizSelected
     }
 }

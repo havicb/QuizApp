@@ -1,27 +1,38 @@
 package com.example.quizapp.presentation.main.home
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.quizapp.databinding.ItemQuizBinding
 import com.squareup.picasso.Picasso
-import kotlin.properties.Delegates
+import javax.inject.Inject
 
-class QuizHomeAdapter(
-    private val quizSelected: (title: String) -> Unit,
+class QuizHomeAdapter @Inject constructor(
+    private val quizzes: Quizzes,
 ) : RecyclerView.Adapter<QuizHomeAdapter.QuizVH>() {
 
-    internal var quizList: List<QuizView> by Delegates.observable(emptyList()) { _, _, _ -> notifyDataSetChanged() }
+    internal lateinit var quizSelected: (title: String) -> Unit
+
+    fun setOnClickListener(listener: (String) -> Unit) {
+        quizSelected = listener
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateQuizzes(data: List<QuizView>) {
+        quizzes.updateQuizzes(data)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         QuizVH(ItemQuizBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: QuizVH, position: Int) {
-        holder.bind(quizList[position])
+        holder.bind(quizzes.getSingleQuizById(position))
     }
 
     override fun getItemCount(): Int {
-        return quizList.size
+        return quizzes.getSize()
     }
 
     inner class QuizVH(private val binding: ItemQuizBinding) :

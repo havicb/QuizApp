@@ -28,9 +28,7 @@ class HomeViewModel @Inject constructor(
     val homeFragmentState: LiveData<HomeFragmentState> get() = _homeFragmentState
 
     init {
-        _quiz.value = quizzes.map {
-            it.toView()
-        }
+        _quiz.value = quizzes.map { it.toView() }
     }
 
     fun quizSelected(quizTitle: String) {
@@ -39,15 +37,11 @@ class HomeViewModel @Inject constructor(
     }
 
     fun startQuiz(difficulty: QuizDifficulty) {
-        navigate(
-            HomeFragmentDirections.actionHomeFragmentToQuizFragment(
-                QuizSettings(
-                    Helpers.findCategoryByTitle(quizSelected!!),
-                    difficulty.value,
-                    10
-                )
-            )
-        )
+        navigate(HomeFragmentDirections.actionHomeFragmentToQuizFragment(quizSettingsParam(difficulty)))
+    }
+
+    private fun quizSettingsParam(difficulty: QuizDifficulty): QuizSettings {
+        return QuizSettings(Helpers.findCategoryByTitle(quizSelected!!), difficulty.value, 10)
     }
 }
 

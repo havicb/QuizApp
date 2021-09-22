@@ -44,7 +44,7 @@ class LoginFragment : BaseBoundFragment<FragmentLoginBinding, LoginViewModel>() 
             is LoginFragmentState.Loading -> onLoading()
             is LoginFragmentState.NotLoading -> onLoadingStopped()
             is LoginFragmentState.ShowLogin -> showLogin()
-            is LoginFragmentState.RegisterSelected -> showToast(loginFragmentState.message)
+            is LoginFragmentState.RegisterSelected -> showToast(getString(loginFragmentState.message))
         }
     }
 

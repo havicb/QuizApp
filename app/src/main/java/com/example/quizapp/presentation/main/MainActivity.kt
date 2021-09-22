@@ -1,8 +1,5 @@
 package com.example.quizapp.presentation.main
 
-import android.util.Log
-import android.widget.Button
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.ViewDataBinding
@@ -40,7 +37,7 @@ class MainActivity : BaseBoundActivity<MainViewModel, ActivityMainBinding>() {
         when (screenState) {
             is MainScreenState.NoInternetConnectionScreen -> {
                 viewFlipper.showScreen(noInternetConnectionScreen.root)
-                onButtonClick(noInternetConnectionScreen.retryConnect) {
+                noInternetConnectionScreen.retryConnectButton.setOnClickListener {
                     reloadScreen {
                         screenState.retryButtonSelected?.invoke()
                     }
@@ -54,10 +51,6 @@ class MainActivity : BaseBoundActivity<MainViewModel, ActivityMainBinding>() {
         onReload()
     }
 
-    private fun onButtonClick(button: Button, listener: () -> Unit) {
-        button.setOnClickListener { listener.invoke() }
-    }
-
     override fun initUI() {
         setSupportActionBar(binding.mainToolbar as Toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -66,4 +59,4 @@ class MainActivity : BaseBoundActivity<MainViewModel, ActivityMainBinding>() {
     }
 }
 
-class MainViewModel() : BaseViewModel() {}
+class MainViewModel() : BaseViewModel()

@@ -20,7 +20,7 @@
             android:textColor="@color/white" />
 
         <Button
-            android:id="@+id/retry_connect"
+            android:id="@+id/retry_connect_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="350dp"

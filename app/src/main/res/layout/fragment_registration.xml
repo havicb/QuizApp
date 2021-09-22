@@ -130,7 +130,7 @@
                 android:layout_below="@id/password_input_layout"
                 android:layout_marginTop="@dimen/large_125"
                 android:backgroundTint="@color/darkPurple"
-                android:onClick="@{() -> viewModel.register()}"
+                android:onClick="@{() -> viewModel.registerSelected()}"
                 android:text="@string/register"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_normal" />

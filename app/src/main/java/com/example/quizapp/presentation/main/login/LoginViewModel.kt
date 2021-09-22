@@ -2,10 +2,13 @@ package com.example.quizapp.presentation.main.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.quizapp.R
 import com.example.quizapp.core.Failure
+import com.example.quizapp.data.auth.login.dto.LoginRequest
 import com.example.quizapp.data.prefstore.PrefsStore
 import com.example.quizapp.domain.auth.login.entity.LoginEntity
 import com.example.quizapp.domain.auth.login.usecase.LoginUseCase
+import com.example.quizapp.domain.auth.login.usecase.Params
 import com.example.quizapp.presentation.base.view.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -32,23 +35,31 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch { getToken() }
     }
 
-    // My api is down, I can not send http request anymore
-    // TODO i will update BE
-    fun loginUser() = viewModelScope.launch {
+    fun loginAsGuest() {
+        navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+    }
+
+    fun loginSelected() = viewModelScope.launch {
         showLoading()
-        delay(2000)
-        /*loginUseCase(Params(LoginRequest(email.value!!, password.value!!))).fold(
-            ::handleLoginError,
-            ::handleSuccessLogin
-        )*/
-        handleSuccessLogin(LoginEntity("jwt_token", "Success", true))
+        loginUser()
         hideLoading()
     }
 
     fun registerButtonSelected() {
         _loginFragmentState.value =
-            LoginFragmentState.RegisterSelected("Register fragment is currently unavailable!")
-        //navigate(LoginFragmentDirections.actionLoginFragmentToRegistrationFragment())
+            LoginFragmentState.RegisterSelected(R.string.register_fragment_unavailable_error)
+        // navigate(LoginFragmentDirections.actionLoginFragmentToRegistrationFragment())
+    }
+
+    private suspend fun loginUser() {
+        loginUseCase(loginParams()).fold(
+            ::handleLoginError,
+            ::handleSuccessLogin
+        )
+    }
+
+    private fun loginParams(): Params {
+        return Params(LoginRequest(email.value!!, password.value!!))
     }
 
     private fun handleLoginError(failure: Failure) {
@@ -88,14 +99,11 @@ class LoginViewModel @Inject constructor(
     }
 }
 
-// According to Bob Uncle: "You should never pass the boolean to function"
-// Instead of creating one data class Loading(isLoading: Boolean) and then observing,
-// I have extracted it to two separate objects
 sealed class LoginFragmentState {
     object Init : LoginFragmentState()
     object ShowLogin : LoginFragmentState()
     object Loading : LoginFragmentState()
     object NotLoading : LoginFragmentState()
-    data class RegisterSelected(val message: String) : LoginFragmentState()
+    data class RegisterSelected(val message: Int) : LoginFragmentState()
     data class LoginFailed(val message: String) : LoginFragmentState()
 }
