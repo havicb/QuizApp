@@ -93,7 +93,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/login_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_normal" />
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/goToRegister_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                 android:onClick="@{() -> viewModel.registerButtonSelected()}"
                 android:textColor="@color/white" />
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/login_as_guest_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

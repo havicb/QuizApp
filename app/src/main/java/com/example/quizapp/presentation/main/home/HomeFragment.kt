@@ -24,18 +24,8 @@ class HomeFragment : BaseBoundFragment<FragmentHomeBinding, HomeViewModel>() {
     }
 
     override fun bindToViewModel() = with(viewModel) {
-        observeQuizzes.observe(viewLifecycleOwner) {
-            quizAdapter.updateQuizzes(it)
-        }
-        observeHomeScreenState.observe(viewLifecycleOwner) {
-            handleFragmentState(it)
-        }
-    }
-
-    private fun handleFragmentState(fragmentState: HomeFragmentState) {
-        when (fragmentState) {
-            is HomeFragmentState.QuizSelected -> onQuizSelected(fragmentState.title)
-        }
+        observeQuizzes.observe(viewLifecycleOwner) { quizAdapter.updateQuizzes(it) }
+        observeSelectedQuiz.observe(viewLifecycleOwner) { onQuizSelected(it) }
     }
 
     private fun onQuizSelected(title: String) {

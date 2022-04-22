@@ -57,8 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/question_number"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/large_175"
             android:layout_margin="@dimen/large_175"
+            android:layout_marginTop="@dimen/large_175"
             android:background="@color/white"
             android:gravity="center"
             android:padding="@dimen/small_150"
@@ -87,23 +87,23 @@
             android:id="@+id/question_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="question_number, question"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            app:constraint_referenced_ids="question_number, question" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/answer_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="answer_A, answer_B, answer_C, answer_D"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            app:constraint_referenced_ids="answer_A, answer_B, answer_C, answer_D" />
 
         <com.example.quizapp.presentation.main.components.AnswerView
             android:id="@+id/answer_A"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/small_175"
-            android:layout_marginEnd="@dimen/small_175"
             android:layout_marginTop="@dimen/large_175"
+            android:layout_marginEnd="@dimen/small_175"
             android:onClick="@{() -> viewModel.onFirstAnswerSelected()}"
             android:text="@={viewModel.answerA}"
             app:layout_constraintEnd_toStartOf="@id/answer_B"
@@ -115,8 +115,8 @@
             android:id="@+id/answer_B"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/small_175"
             android:layout_marginTop="@dimen/large_175"
+            android:layout_marginEnd="@dimen/small_175"
             android:onClick="@{() -> viewModel.onSecondAnswerSelected()}"
             android:text="@={viewModel.answerB}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -129,8 +129,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/small_175"
-            android:layout_marginEnd="@dimen/small_175"
             android:layout_marginTop="@dimen/large_175"
+            android:layout_marginEnd="@dimen/small_175"
             android:onClick="@{() -> viewModel.onThirdAnswerSelected()}"
             android:text="@={viewModel.answerC}"
             app:layout_constraintEnd_toStartOf="@+id/answer_D"
@@ -142,8 +142,8 @@
             android:id="@+id/answer_D"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/small_175"
             android:layout_marginTop="@dimen/large_175"
+            android:layout_marginEnd="@dimen/small_175"
             android:onClick="@{() -> viewModel.onFourthAnswerSelected()}"
             android:text="@={viewModel.answerD}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -151,22 +151,23 @@
             app:layout_constraintStart_toEndOf="@+id/answer_C"
             app:layout_constraintTop_toBottomOf="@id/answer_B" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_proceed_to_next_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/large_175"
             android:layout_marginTop="@dimen/large_175"
             android:layout_marginEnd="@dimen/large_175"
+            android:layout_marginBottom="@dimen/large_175"
             android:backgroundTint="@color/white"
             android:onClick="@{() -> viewModel.checkQuestion()}"
             android:text="@string/next_question"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_normal"
             android:visibility="invisible"
-            android:layout_marginBottom="@dimen/large_175"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

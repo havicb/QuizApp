@@ -18,22 +18,23 @@ class HomeViewModel @Inject constructor(
     quizDataUseCase: GetQuizDataUseCase
 ) : BaseViewModel() {
 
+    private lateinit var quizSelected: String
+
     private var quizzes: List<QuizEntity> = quizDataUseCase.fetchQuizData()
-    private var quizSelected: String? = null
 
-    private val _quiz = MutableLiveData<List<QuizView>>()
-    private val _homeFragmentState = MutableLiveData<HomeFragmentState>()
+    private val quiz = MutableLiveData<List<QuizView>>()
+    private val selectedQuiz = MutableLiveData<String>()
 
-    val observeQuizzes: LiveData<List<QuizView>> get() = _quiz
-    val observeHomeScreenState: LiveData<HomeFragmentState> get() = _homeFragmentState
+    val observeQuizzes: LiveData<List<QuizView>> get() = quiz
+    val observeSelectedQuiz: LiveData<String> get() = selectedQuiz
 
     init {
-        _quiz.value = quizzes.map { it.toView() }
+        quiz.value = quizzes.map { it.toView() }
     }
 
     fun quizSelected(quizTitle: String) {
         quizSelected = quizTitle
-        _homeFragmentState.value = HomeFragmentState.QuizSelected(quizTitle)
+        selectedQuiz.value = quizTitle
     }
 
     fun startQuiz(difficulty: QuizDifficulty) {
@@ -41,12 +42,8 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun quizSettingsParam(difficulty: QuizDifficulty): QuizSettings {
-        return QuizSettings(Helpers.findCategoryByTitle(quizSelected!!), difficulty.value, 10)
+        return QuizSettings(Helpers.findCategoryByTitle(quizSelected), difficulty.value, 10)
     }
-}
-
-sealed class HomeFragmentState {
-    data class QuizSelected(val title: String) : HomeFragmentState()
 }
 
 data class QuizSettings(

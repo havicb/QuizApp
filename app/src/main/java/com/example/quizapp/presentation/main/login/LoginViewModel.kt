@@ -48,7 +48,6 @@ class LoginViewModel @Inject constructor(
     fun registerButtonSelected() {
         _loginFragmentState.value =
             LoginFragmentState.RegisterSelected(R.string.register_fragment_unavailable_error)
-        // navigate(LoginFragmentDirections.actionLoginFragmentToRegistrationFragment())
     }
 
     private suspend fun loginUser() {
