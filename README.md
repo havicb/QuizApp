@@ -17,3 +17,16 @@ Simple quiz app that demonstrates my skills as an android developer.
  - Fast image loading with Glide
  - Clean arhitecture
  
+# Screens
+
+# Register & Login screens
+ - User is able to register or login to his account
+ - Currently this features are not possible, since BE is broken.
+
+# Home screen
+ - User is able to see list of quiz categories
+ - User is able to choose one of the categories to play
+ - User is able to set difficulty for wanted quiz: Easy, Medium, Hard
+
+# Quiz screen
+ - User is able to play a quiz, and earn points.
