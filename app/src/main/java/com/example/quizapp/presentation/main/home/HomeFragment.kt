@@ -23,22 +23,26 @@ class HomeFragment : BaseBoundFragment<FragmentHomeBinding, HomeViewModel>() {
         initRecycler()
     }
 
-    override fun bindToViewModel() {
-        viewModel.quiz.observe(viewLifecycleOwner) {
+    override fun bindToViewModel() = with(viewModel) {
+        observeQuizzes.observe(viewLifecycleOwner) {
             quizAdapter.updateQuizzes(it)
         }
-        viewModel.homeFragmentState.observe(viewLifecycleOwner) {
+        observeHomeScreenState.observe(viewLifecycleOwner) {
             handleFragmentState(it)
         }
     }
 
     private fun handleFragmentState(fragmentState: HomeFragmentState) {
         when (fragmentState) {
-            is HomeFragmentState.QuizSelected -> SetQuizDialog(
-                requireContext(),
-                fragmentState.title
-            ) { viewModel.startQuiz(it) }
+            is HomeFragmentState.QuizSelected -> onQuizSelected(fragmentState.title)
         }
+    }
+
+    private fun onQuizSelected(title: String) {
+        SetQuizDialog(
+            requireContext(),
+            title
+        ) { viewModel.startQuiz(it) }
     }
 
     private fun initRecycler() = with(binding) {

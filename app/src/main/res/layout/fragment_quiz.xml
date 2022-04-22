@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="selectedAnswer"
             type="String" />
@@ -12,7 +14,7 @@
             type="com.example.quizapp.presentation.main.quiz.QuizViewModel" />
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".QuizFragment">
@@ -28,7 +30,10 @@
             android:layout_marginTop="@dimen/large_175"
             android:layout_marginEnd="@dimen/normal_100"
             android:max="10"
-            android:progress="0" />
+            android:progress="0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/question_number"
@@ -41,6 +46,9 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_large"
             android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/quiz_progress"
             tools:text="Question 1" />
 
         <TextView
@@ -49,9 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/question_number"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="@dimen/normal_150"
             android:layout_marginTop="@dimen/large_175"
-            android:layout_marginEnd="@dimen/normal_150"
+            android:layout_margin="@dimen/large_175"
             android:background="@color/white"
             android:gravity="center"
             android:padding="@dimen/small_150"
@@ -59,8 +66,10 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_normal"
             android:textStyle="bold"
-            android:visibility="invisible" />
-
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/question_number" />
 
         <ProgressBar
             android:id="@+id/question_loading_progress"
@@ -68,104 +77,96 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:visibility="visible" />
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/first_two_answers_ll"
-            android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/question_group"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/question"
-            android:layout_marginTop="@dimen/large_175"
-            android:orientation="horizontal"
-            android:visibility="invisible">
+            app:constraint_referenced_ids="question_number, question"
+            android:visibility="gone"/>
 
-            <TextView
-                android:id="@+id/answer_A"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/small_175"
-                android:layout_marginEnd="@dimen/small_175"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:gravity="center"
-                android:onClick="@{() -> viewModel.selectedAnswer(answerA)}"
-                android:padding="@dimen/normal_100"
-                android:text="@={viewModel.answerA}"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_small_125"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/answer_B"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/small_175"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:gravity="center"
-                android:onClick="@{() -> viewModel.selectedAnswer(answerB)}"
-                android:padding="@dimen/normal_100"
-                android:text="@={viewModel.answerB}"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_small_125"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/last_two_answers_ll"
-            android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/answer_group"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/first_two_answers_ll"
+            app:constraint_referenced_ids="answer_A, answer_B, answer_C, answer_D"
+            android:visibility="gone"/>
+
+        <com.example.quizapp.presentation.main.components.AnswerView
+            android:id="@+id/answer_A"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_175"
+            android:layout_marginEnd="@dimen/small_175"
             android:layout_marginTop="@dimen/large_175"
-            android:orientation="horizontal"
-            android:visibility="invisible">
+            android:onClick="@{() -> viewModel.onFirstAnswerSelected()}"
+            android:text="@={viewModel.answerA}"
+            app:layout_constraintEnd_toStartOf="@id/answer_B"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/question" />
 
-            <TextView
-                android:id="@+id/answer_C"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/small_175"
-                android:layout_marginEnd="@dimen/small_175"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:gravity="center"
-                android:onClick="@{() -> viewModel.selectedAnswer(answerC)}"
-                android:padding="@dimen/normal_100"
-                android:text="@={viewModel.answerC}"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_small_125"
-                android:textStyle="bold" />
+        <com.example.quizapp.presentation.main.components.AnswerView
+            android:id="@+id/answer_B"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/small_175"
+            android:layout_marginTop="@dimen/large_175"
+            android:onClick="@{() -> viewModel.onSecondAnswerSelected()}"
+            android:text="@={viewModel.answerB}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/answer_A"
+            app:layout_constraintTop_toBottomOf="@id/question" />
 
-            <TextView
-                android:id="@+id/answer_D"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/small_175"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:gravity="center"
-                android:onClick="@{() -> viewModel.selectedAnswer(answerD)}"
-                android:padding="@dimen/normal_100"
-                android:text="@={viewModel.answerD}"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_small_125"
-                android:textStyle="bold" />
-        </LinearLayout>
+
+        <com.example.quizapp.presentation.main.components.AnswerView
+            android:id="@+id/answer_C"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_175"
+            android:layout_marginEnd="@dimen/small_175"
+            android:layout_marginTop="@dimen/large_175"
+            android:onClick="@{() -> viewModel.onThirdAnswerSelected()}"
+            android:text="@={viewModel.answerC}"
+            app:layout_constraintEnd_toStartOf="@+id/answer_D"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/answer_A" />
+
+        <com.example.quizapp.presentation.main.components.AnswerView
+            android:id="@+id/answer_D"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/small_175"
+            android:layout_marginTop="@dimen/large_175"
+            android:onClick="@{() -> viewModel.onFourthAnswerSelected()}"
+            android:text="@={viewModel.answerD}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/answer_C"
+            app:layout_constraintTop_toBottomOf="@id/answer_B" />
 
         <Button
             android:id="@+id/btn_proceed_to_next_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/last_two_answers_ll"
-            android:backgroundTint="@color/white"
             android:layout_marginStart="@dimen/large_175"
             android:layout_marginTop="@dimen/large_175"
             android:layout_marginEnd="@dimen/large_175"
-            android:onClick="@{() -> viewModel.checkQuestion(selectedAnswer)}"
+            android:backgroundTint="@color/white"
+            android:onClick="@{() -> viewModel.checkQuestion()}"
             android:text="@string/next_question"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_normal"
-            android:visibility="invisible" />
-    </RelativeLayout>
+            android:visibility="invisible"
+            android:layout_marginBottom="@dimen/large_175"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

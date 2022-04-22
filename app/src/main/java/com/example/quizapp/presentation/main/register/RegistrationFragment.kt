@@ -5,8 +5,7 @@ import com.example.quizapp.BR
 import com.example.quizapp.R
 import com.example.quizapp.core.extensions.hide
 import com.example.quizapp.core.extensions.showSnackbar
-import com.example.quizapp.core.extensions.showToast
-import com.example.quizapp.core.extensions.visible
+import com.example.quizapp.core.extensions.show
 import com.example.quizapp.databinding.FragmentRegistrationBinding
 import com.example.quizapp.presentation.base.view.BaseBoundFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,8 +17,8 @@ class RegistrationFragment :
     override val viewModelNameId: Int = BR.viewModel
     override val viewModel: RegistrationViewModel by viewModels()
 
-    override fun bindToViewModel() {
-        viewModel.registrationFragmentState.observe(viewLifecycleOwner) {
+    override fun bindToViewModel() = with(viewModel) {
+        observeRegistrationScreenState.observe(viewLifecycleOwner) {
             handleFragmentState(it)
         }
     }
@@ -33,6 +32,6 @@ class RegistrationFragment :
         }
     }
 
-    private fun onLoading() = binding.registrationProgress.visible()
+    private fun onLoading() = binding.registrationProgress.show()
     private fun onStoppedLoading() = binding.registrationProgress.hide()
 }

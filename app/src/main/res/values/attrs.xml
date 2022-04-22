@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AnswerBox">
+        <attr name="state" format="enum" />
+    </declare-styleable>
+
+    <declare-styleable name="DisableGroupView">
+        <attr name="referenceChilds" format="reference" />
+        <attr name="shouldDisableViews" format="boolean"/>
+    </declare-styleable>
+</resources>

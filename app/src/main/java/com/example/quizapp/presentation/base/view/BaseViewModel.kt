@@ -14,7 +14,7 @@ open class BaseViewModel : ViewModel() {
 
     private val _screenState = MutableLiveData<MainScreenState>()
 
-    val error: MutableLiveData<Failure> = MutableLiveData()
+    val observeError: MutableLiveData<Failure> = MutableLiveData()
     val navigationEvent: SingleLiveEvent<NavigationEvent> = SingleLiveEvent()
     val screenState: LiveData<MainScreenState> get() = _screenState
 
@@ -28,15 +28,15 @@ open class BaseViewModel : ViewModel() {
 
     protected fun handleCommonNetworkErrors(failure: Failure.NetworkFailure, onRetry: (() -> Unit)? = null) = viewModelScope.launch {
         when (failure) {
-            is Failure.ServerFailure -> error.value = Failure.ServerFailure(failure.message)
+            is Failure.ServerFailure -> observeError.value = Failure.ServerFailure(failure.message)
             is Failure.NetworkConnectionFailure -> {
                 _screenState.value = MainScreenState.NoInternetConnectionScreen(onRetry)
-                error.value = Failure.NetworkConnectionFailure(failure.message)
+                observeError.value = Failure.NetworkConnectionFailure(failure.message)
             }
-            is Failure.BadRequest -> error.value = Failure.BadRequest(failure.message)
-            is Failure.Forbidden -> error.value = Failure.Forbidden(failure.message)
-            is Failure.NotAuthorized -> error.value = Failure.NotAuthorized(failure.message)
-            is Failure.NotFound -> error.value = Failure.NotFound(failure.message)
+            is Failure.BadRequest -> observeError.value = Failure.BadRequest(failure.message)
+            is Failure.Forbidden -> observeError.value = Failure.Forbidden(failure.message)
+            is Failure.NotAuthorized -> observeError.value = Failure.NotAuthorized(failure.message)
+            is Failure.NotFound -> observeError.value = Failure.NotFound(failure.message)
         }
     }
 }

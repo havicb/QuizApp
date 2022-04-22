@@ -24,8 +24,8 @@ class HomeViewModel @Inject constructor(
     private val _quiz = MutableLiveData<List<QuizView>>()
     private val _homeFragmentState = MutableLiveData<HomeFragmentState>()
 
-    val quiz: LiveData<List<QuizView>> get() = _quiz
-    val homeFragmentState: LiveData<HomeFragmentState> get() = _homeFragmentState
+    val observeQuizzes: LiveData<List<QuizView>> get() = _quiz
+    val observeHomeScreenState: LiveData<HomeFragmentState> get() = _homeFragmentState
 
     init {
         _quiz.value = quizzes.map { it.toView() }

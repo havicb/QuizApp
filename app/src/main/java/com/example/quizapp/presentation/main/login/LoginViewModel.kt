@@ -29,7 +29,7 @@ class LoginViewModel @Inject constructor(
     val email = MutableLiveData("")
     val password = MutableLiveData("")
 
-    val loginFragmentState: StateFlow<LoginFragmentState> get() = _loginFragmentState
+    val observeLoginScreenState: StateFlow<LoginFragmentState> get() = _loginFragmentState
 
     init {
         viewModelScope.launch { getToken() }
@@ -65,7 +65,7 @@ class LoginViewModel @Inject constructor(
     private fun handleLoginError(failure: Failure) {
         when (failure) {
             is Failure.NetworkFailure -> handleCommonNetworkErrors(failure)
-            else -> error.value = Failure.OtherFailure("Dummy error..")
+            else -> observeError.value = Failure.OtherFailure("Dummy error..")
         }
     }
 

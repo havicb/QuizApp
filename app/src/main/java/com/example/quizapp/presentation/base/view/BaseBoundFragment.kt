@@ -1,7 +1,6 @@
 package com.example.quizapp.presentation.base.view
 
 import androidx.databinding.ViewDataBinding
-import com.example.quizapp.R
 import com.example.quizapp.core.Failure
 import com.example.quizapp.core.extensions.navController
 import com.example.quizapp.core.extensions.showSnackbar
@@ -40,21 +39,21 @@ abstract class BaseBoundFragment<ViewBindingType : ViewDataBinding, ViewModelTyp
         }
     }
 
-    private fun initBaseObserver() {
-        viewModel.navigationEvent.observe(viewLifecycleOwner) {
+    private fun initBaseObserver() = with(viewModel) {
+        navigationEvent.observe(viewLifecycleOwner) {
             when (it) {
                 is NavigationEvent.To -> navController.navigate(it.directions)
                 is NavigationEvent.Back -> navController.navigateUp()
             }
         }
-        viewModel.error.observe(viewLifecycleOwner) { failure ->
+        observeError.observe(viewLifecycleOwner) { failure ->
             when (failure) {
                 is Failure.NetworkFailure -> handleCommonNetworkErrors(failure)
                 else -> Unit
             }
         }
         // for some reason i am not able to observe this screenState inside MainActivity
-        viewModel.screenState.observe(this) {
+        screenState.observe(this@BaseBoundFragment) {
             (activity as MainActivity).updateScreen(it)
         }
     }

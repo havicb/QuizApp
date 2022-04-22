@@ -3,7 +3,6 @@ package com.example.quizapp.presentation.main.register
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.quizapp.core.Either
 import com.example.quizapp.core.Failure
 import com.example.quizapp.data.auth.register.dto.RegisterRequest
 import com.example.quizapp.domain.auth.register.entity.RegisterEntity
@@ -27,7 +26,7 @@ class RegistrationViewModel @Inject constructor(
     var username = MutableLiveData("")
     var password = MutableLiveData("")
 
-    val registrationFragmentState: LiveData<RegistrationFragmentState> get() = _registrationFragmentState
+    val observeRegistrationScreenState: LiveData<RegistrationFragmentState> get() = _registrationFragmentState
 
     fun registerSelected() = viewModelScope.launch {
         if (validateFields()) {
@@ -82,9 +81,6 @@ class RegistrationViewModel @Inject constructor(
     }
 }
 
-// According to Bob Uncle: "You should never pass the boolean to function"
-// Instead of creating one data class Loading(isLoading: Boolean) and then observing,
-// I have extracted it to two separate objects
 sealed class RegistrationFragmentState {
     object Init : RegistrationFragmentState()
     object EmptyRegisterField : RegistrationFragmentState()

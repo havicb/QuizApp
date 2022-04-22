@@ -2,7 +2,7 @@ package com.example.quizapp.core.extensions
 
 import android.view.View
 
-fun View.visible() {
+fun View.show() {
     visibility = View.VISIBLE
 }
 
@@ -12,8 +12,10 @@ fun View.hide() {
 
 fun View.disable() {
     isEnabled = false
+    isClickable = false
 }
 
 fun View.enable() {
     isEnabled = true
+    isClickable = true
 }

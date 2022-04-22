@@ -7,7 +7,7 @@ import com.example.quizapp.R
 import com.example.quizapp.core.Failure
 import com.example.quizapp.core.extensions.hide
 import com.example.quizapp.core.extensions.showToast
-import com.example.quizapp.core.extensions.visible
+import com.example.quizapp.core.extensions.show
 import com.example.quizapp.databinding.FragmentLoginBinding
 import com.example.quizapp.presentation.base.view.BaseBoundFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,13 +19,13 @@ class LoginFragment : BaseBoundFragment<FragmentLoginBinding, LoginViewModel>() 
     override val viewModelNameId = BR.viewModel
     override val viewModel: LoginViewModel by viewModels()
 
-    override fun bindToViewModel() {
+    override fun bindToViewModel() = with(viewModel) {
         lifecycleScope.launchWhenResumed {
-            viewModel.loginFragmentState.collect {
+            observeLoginScreenState.collect {
                 handleFragmentState(it)
             }
         }
-        viewModel.error.observe(viewLifecycleOwner) {
+        observeError.observe(viewLifecycleOwner) {
             handleFailure(it)
         }
     }
@@ -50,9 +50,9 @@ class LoginFragment : BaseBoundFragment<FragmentLoginBinding, LoginViewModel>() 
 
     private fun showLogin() = with(binding) {
         loginLoading.hide()
-        loginViews.visible()
+        loginViews.show()
     }
 
-    private fun onLoading() = binding.loginProgress.visible()
+    private fun onLoading() = binding.loginProgress.show()
     private fun onLoadingStopped() = binding.loginProgress.hide()
 }
