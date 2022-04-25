@@ -12,7 +12,7 @@
     <string name="btn_finish_quiz_text">Finish quiz</string>
 
 
-    <string name="discover">Discover..</string>
+    <string name="filter">Filter..</string>
     <string name="ok_button">OK</string>
     <string name="next_question">Next question</string>
     <string name="username">Username</string>
@@ -39,6 +39,7 @@
 
     <string name="preference_key">PREFERENCES_STORAGE</string>
     <string name="auth_key">USER_AUTH_TOKEN</string>
+    <string name="points_key">USER_POINTS_KEY</string>
     <string name="log_out">Log out</string>
     <string name="retry">Retry</string>
     <string name="login_as_guest">Login as guest</string>

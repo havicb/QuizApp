@@ -4,6 +4,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.quizapp.BR
 import com.example.quizapp.R
+import com.example.quizapp.core.extensions.onActionDone
 import com.example.quizapp.databinding.FragmentHomeBinding
 import com.example.quizapp.presentation.base.view.BaseBoundFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,6 +25,11 @@ class HomeFragment : BaseBoundFragment<FragmentHomeBinding, HomeViewModel>() {
     }
 
     override fun bindToViewModel() = with(viewModel) {
+        binding.searchView.onActionDone {
+            viewModel.onSearchButton()
+            true
+        }
+        observeUserPoints.observe(viewLifecycleOwner) { binding.textViewPoints.text = it.toString() }
         observeQuizzes.observe(viewLifecycleOwner) { quizAdapter.updateQuizzes(it) }
         observeSelectedQuiz.observe(viewLifecycleOwner) { onQuizSelected(it) }
     }
@@ -40,6 +46,6 @@ class HomeFragment : BaseBoundFragment<FragmentHomeBinding, HomeViewModel>() {
             adapter = quizAdapter
             layoutManager = GridLayoutManager(requireContext(), 2)
         }
-        quizAdapter.quizSelected = viewModel!!::quizSelected
+        quizAdapter.onQuizSelected = viewModel!!::quizSelected
     }
 }

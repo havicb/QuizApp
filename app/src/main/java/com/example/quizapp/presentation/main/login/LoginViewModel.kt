@@ -86,7 +86,6 @@ class LoginViewModel @Inject constructor(
     }
 
     private suspend fun getToken() {
-        prefsStore.clear()
         prefsStore.getAuthToken().collect {
             if (it != "") {
                 delay(1000)

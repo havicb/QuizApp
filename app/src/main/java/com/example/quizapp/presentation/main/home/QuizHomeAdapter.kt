@@ -12,11 +12,7 @@ class QuizHomeAdapter @Inject constructor(
     private val quizzes: Quizzes,
 ) : RecyclerView.Adapter<QuizHomeAdapter.QuizVH>() {
 
-    internal lateinit var quizSelected: (title: String) -> Unit
-
-    fun setOnClickListener(listener: (String) -> Unit) {
-        quizSelected = listener
-    }
+    internal lateinit var onQuizSelected: (title: String) -> Unit
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateQuizzes(data: List<QuizView>) {
@@ -45,7 +41,7 @@ class QuizHomeAdapter @Inject constructor(
                 .fit()
                 .into(quizPhoto)
 
-            root.setOnClickListener { quizSelected(quizView.title) }
+            root.setOnClickListener { onQuizSelected(quizView.title) }
         }
     }
 }

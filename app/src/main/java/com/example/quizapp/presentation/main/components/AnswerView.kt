@@ -5,9 +5,9 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import com.example.quizapp.R
+import com.example.quizapp.core.extensions.loadColor
 import com.example.quizapp.core.extensions.toDp
 
 class AnswerView(
@@ -43,26 +43,26 @@ class AnswerView(
 
     private fun onDefault() {
         setBackgroundResource(R.color.white)
-        setTextColor(ContextCompat.getColor(context, R.color.cardview_dark_background))
+        setTextColor(context.loadColor(R.color.cardview_dark_background))
         textSize = 12f
         setTypeface(null, Typeface.BOLD)
     }
 
     private fun onTrueAnswer() {
         setBackgroundResource(R.color.lightGreen)
-        setTextColor(ContextCompat.getColor(context, R.color.white))
+        setTextColor(context.loadColor(R.color.white))
         setTypeface(null, Typeface.BOLD_ITALIC)
-        textSize = 18f
+        textSize = 13f
     }
 
     private fun onWrongAnswer() {
         setBackgroundResource(R.color.red)
-        setTextColor(ContextCompat.getColor(context, R.color.white))
+        setTextColor(context.loadColor(R.color.white))
     }
 
     private fun onSelectedAnswer() {
         setBackgroundResource(R.color.yellow)
-        setTextColor(ContextCompat.getColor(context, R.color.black))
+        setTextColor(context.loadColor(R.color.black))
     }
 
     override fun setText(text: CharSequence?, type: BufferType?) {

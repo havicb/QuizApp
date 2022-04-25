@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.quizapp.core.Failure
+import com.example.quizapp.data.prefstore.PrefsStore
 import com.example.quizapp.domain.questions.entity.QuestionEntity
 import com.example.quizapp.domain.questions.usecase.GetQuestionsUseCase
 import com.example.quizapp.domain.questions.usecase.Params
@@ -22,6 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class QuizViewModel @Inject constructor(
     private val questionsUseCase: GetQuestionsUseCase,
+    private val prefStore: PrefsStore,
     state: SavedStateHandle
 ) : BaseViewModel() {
 
@@ -148,6 +150,7 @@ class QuizViewModel @Inject constructor(
     }
 
     private suspend fun onIncorrectAnswer() {
+        prefStore.updateUserPoints(points)
         delay(1000)
         updateIncorrectAnswer()
         delay(2000)

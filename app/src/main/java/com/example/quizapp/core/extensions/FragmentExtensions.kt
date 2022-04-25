@@ -26,10 +26,6 @@ fun Fragment.showGenericDialog(
     }.show()
 }
 
-fun Fragment.getColor(color: Int): Int {
-    return ContextCompat.getColor(requireContext(), color)
-}
-
 fun Fragment.showToast(message: String) {
     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 }
