@@ -15,6 +15,7 @@ Simple quiz app that demonstrates my skills as an android developer.
  - Databinding with ViewModel
  - DI with Hilt
  - Fast image loading with Glide
+ - Data store
  - Clean arhitecture
  
 # Screens
