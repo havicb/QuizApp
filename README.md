@@ -22,7 +22,7 @@ Simple quiz app that demonstrates my skills as an android developer.
 
 # Register & Login screens
  - User is able to register or login to his account
- - Currently this features are not possible, since BE is broken.
+ - Currently these features are not possible, since BE is broken.
  - User is able to login as a guest
 
 # Home screen
